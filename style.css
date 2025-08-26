@@ -2,32 +2,67 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f9f9f9;
+  text-align: center;
 }
 
+/* Header / Title */
+header {
+  padding: 40px 20px 20px 20px;
+  background: #fff;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 3em;
+}
+
+header .usage {
+  margin-top: 10px;
+  font-size: 1.2em;
+  color: #333;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Video Section */
+.videos {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px 0;
+}
+
+.video-left, .video-right {
+  flex: 1;
+}
+
+/* Free/Paid Boxes */
 .container {
   display: flex;
-  height: 100vh; /* Full screen height */
-  justify-content: center; /* Center the boxes horizontally */
-  align-items: flex-end; /* Make the boxes lower */
-  gap: 40px; /* Space between Free and Paid boxes */
-  border-left: 50px solid #ccc; /* Left border for tunnel effect */
-  border-right: 50px solid #ccc; /* Right border for tunnel effect */
+  justify-content: center; /* horizontal centering */
+  gap: 40px;
+  padding-top: 50px; /* lowers the boxes */
+  border-left: 50px solid #ccc; /* tunnel left border */
+  border-right: 50px solid #ccc; /* tunnel right border */
   box-sizing: border-box;
 }
 
 .box {
-  width: 300px; /* Narrower boxes, closer to center */
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px;
   text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* subtle shadow */
+  border-radius: 10px;
 }
 
 .free {
   background: #f0f0f0;
-  border-right: 2px solid #ccc; /* Split line between boxes */
+  border-right: 2px solid #ccc;
 }
 
 .paid {
@@ -56,4 +91,19 @@ p {
 
 .button:hover {
   background: #444;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .videos {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 20px;
+    border-left: 20px solid #ccc;
+    border-right: 20px solid #ccc;
+    padding-top: 20px;
+  }
 }
