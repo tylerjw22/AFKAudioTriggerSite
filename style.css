@@ -7,10 +7,15 @@ body {
 .container {
   display: flex;
   height: 100vh; /* Full screen height */
+  justify-content: center; /* Center the boxes horizontally */
+  gap: 40px; /* Space between Free and Paid boxes */
+  border-left: 50px solid #ccc; /* Left border for tunnel effect */
+  border-right: 50px solid #ccc; /* Right border for tunnel effect */
+  box-sizing: border-box;
 }
 
 .box {
-  flex: 1; /* Split screen 50/50 */
+  width: 300px; /* Narrower boxes, closer to center */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,7 +26,7 @@ body {
 
 .free {
   background: #f0f0f0;
-  border-right: 2px solid #ccc; /* Split line */
+  border-right: 2px solid #ccc; /* Split line between boxes */
 }
 
 .paid {
@@ -51,4 +56,3 @@ p {
 .button:hover {
   background: #444;
 }
-
