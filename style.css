@@ -3,13 +3,12 @@ body {
   font-family: Arial, sans-serif;
   background: #1E1E23; /* Dark background */
   color: #d3d3d3; /* Light grey text */
-  text-align: center;
 }
 
-/* Header / Title */
+/* Header / Title top-left */
 header {
   padding: 20px 40px;
-  text-align: left; /* Title top-left */
+  text-align: left;
 }
 
 header h1 {
@@ -18,53 +17,43 @@ header h1 {
   color: #3878A0; /* Title color */
 }
 
-header .usage {
-  margin-top: 10px;
+/* Usage paragraph centered above boxes */
+.usage-section {
+  text-align: center;
+  padding: 20px 40px;
+}
+
+.usage-section .usage {
   font-size: 1.2em;
-  color: #d3d3d3; /* Paragraph light grey */
   max-width: 800px;
-}
-
-/* Video Section */
-.videos {
-  display: flex;
-  justify-content: center; /* Center videos horizontally */
-  gap: 60px;
-  padding: 40px 0;
-}
-
-.video-left, .video-right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  color: #d3d3d3;
 }
 
 /* Free/Paid Boxes */
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* center horizontally */
   gap: 40px;
-  padding-top: 50px; /* Lowers the boxes */
-  border-left: 50px solid #ccc; /* Tunnel left border */
-  border-right: 50px solid #ccc; /* Tunnel right border */
-  box-sizing: border-box;
+  padding: 40px 20px; /* vertical spacing */
 }
 
 .box {
-  width: 300px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 30px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* subtle shadow */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   border-radius: 10px;
-  background: #2A2A33; /* slightly lighter than background for boxes */
+  background: #2A2A33; /* slightly lighter than background */
 }
 
 .free {
-  border-right: 2px solid #3878A0; /* split line in accent color */
+  border-right: 2px solid #3878A0;
 }
 
 .paid {
@@ -72,15 +61,21 @@ header .usage {
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #3878A0;
 }
 
 p {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   line-height: 1.6;
 }
 
+iframe {
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+/* Buttons */
 .button {
   display: inline-block;
   padding: 14px 28px;
@@ -96,17 +91,13 @@ p {
   background: #2B5D78;
 }
 
-/* Responsive */
+/* Responsive for small screens */
 @media (max-width: 800px) {
-  .videos {
-    flex-direction: column;
-    gap: 20px;
-  }
   .container {
     flex-direction: column;
     gap: 20px;
-    border-left: 20px solid #ccc;
-    border-right: 20px solid #ccc;
-    padding-top: 20px;
+  }
+  .box {
+    width: 90%;
   }
 }
