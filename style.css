@@ -1,50 +1,52 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f9f9f9;
+  background: #1E1E23; /* Dark background */
+  color: #d3d3d3; /* Light grey text */
   text-align: center;
 }
 
 /* Header / Title */
 header {
-  padding: 40px 20px 20px 20px;
-  background: #fff;
+  padding: 20px 40px;
+  text-align: left; /* Title top-left */
 }
 
 header h1 {
   margin: 0;
   font-size: 3em;
+  color: #3878A0; /* Title color */
 }
 
 header .usage {
   margin-top: 10px;
   font-size: 1.2em;
-  color: #333;
+  color: #d3d3d3; /* Paragraph light grey */
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Video Section */
 .videos {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center videos horizontally */
   gap: 60px;
   padding: 40px 0;
 }
 
 .video-left, .video-right {
   flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 /* Free/Paid Boxes */
 .container {
   display: flex;
-  justify-content: center; /* horizontal centering */
+  justify-content: center;
   gap: 40px;
-  padding-top: 50px; /* lowers the boxes */
-  border-left: 50px solid #ccc; /* tunnel left border */
-  border-right: 50px solid #ccc; /* tunnel right border */
+  padding-top: 50px; /* Lowers the boxes */
+  border-left: 50px solid #ccc; /* Tunnel left border */
+  border-right: 50px solid #ccc; /* Tunnel right border */
   box-sizing: border-box;
 }
 
@@ -56,21 +58,22 @@ header .usage {
   align-items: center;
   padding: 40px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* subtle shadow */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* subtle shadow */
   border-radius: 10px;
+  background: #2A2A33; /* slightly lighter than background for boxes */
 }
 
 .free {
-  background: #f0f0f0;
-  border-right: 2px solid #ccc;
+  border-right: 2px solid #3878A0; /* split line in accent color */
 }
 
 .paid {
-  background: #fff;
+  border-left: 2px solid #3878A0;
 }
 
 h2 {
   margin-bottom: 20px;
+  color: #3878A0;
 }
 
 p {
@@ -81,8 +84,8 @@ p {
 .button {
   display: inline-block;
   padding: 14px 28px;
-  background: black;
-  color: white;
+  background: #3878A0;
+  color: #d3d3d3;
   text-decoration: none;
   border-radius: 8px;
   font-weight: bold;
@@ -90,7 +93,7 @@ p {
 }
 
 .button:hover {
-  background: #444;
+  background: #2B5D78;
 }
 
 /* Responsive */
