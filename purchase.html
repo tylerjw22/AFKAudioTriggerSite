@@ -47,32 +47,31 @@
     }
     #paypal-container {
       margin-top:20px;
-      display:none; /* hidden until email is valid */
+      display:none;
     }
   </style>
 
-  <!-- ⚠️ Sandbox client-id (fake payments). Currency set to AUD -->
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=AUD&intent=capture&disable-funding=paylater&commit=true"></script>
+  <!-- Sandbox PayPal SDK, AUD currency -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=AUD&intent=capture"></script>
 </head>
 <body>
 
   <div class="purchase-box">
     <h2>Purchase AFK Audio Trigger Paid Version</h2>
     
-    <!-- Purchase Form -->
+    <!-- Email form -->
     <form id="purchaseForm">
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required>
     </form>
 
-    <!-- PayPal Buttons Container -->
     <div id="paypal-container">
       <div id="paypal-buttons"></div>
     </div>
 
-    <!-- Privacy Notice -->
     <div class="privacy-box">
-      AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong> with third parties.
+      We only collect your <strong>email address</strong> to generate your license code.  
+      Your email will <strong>never be sold or shared</strong>.
     </div>
   </div>
 
@@ -81,7 +80,7 @@
       const emailInput = document.getElementById("email");
       const paypalContainer = document.getElementById("paypal-container");
 
-      // Show PayPal buttons when email is valid
+      // Show PayPal button only when email is valid
       emailInput.addEventListener("input", () => {
         if (emailInput.checkValidity()) {
           paypalContainer.style.display = "block";
@@ -92,7 +91,6 @@
 
       paypal.Buttons({
         onClick: function(data, actions) {
-          const email = emailInput.value.trim();
           if (!emailInput.checkValidity()) {
             alert("Please enter a valid email before continuing.");
             return actions.reject();
@@ -103,16 +101,18 @@
           return actions.order.create({
             purchase_units: [{
               amount: { value: "9.99", currency_code: "AUD" },
-              description: "AFK Audio Trigger Paid Version",
-              category: "DIGITAL_GOODS"
-            }]
+              description: "AFK Audio Trigger Paid Version"
+            }],
+            application_context: {
+              shipping_preference: "NO_SHIPPING" // ✅ removes address step
+            }
           });
         },
         onApprove: async function(data, actions) {
           const details = await actions.order.capture();
           const email = emailInput.value.trim();
 
-          // 🔑 Call your backend to generate a license
+          // Replace with your backend license generation
           try {
             const response = await fetch("http://127.0.0.1:8000/admin/generate", {
               method: "POST",
