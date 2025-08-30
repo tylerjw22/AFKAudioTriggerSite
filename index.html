@@ -1,73 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AFK Audio Trigger</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f2f2f2; margin: 0; padding: 0; }
-        header { text-align: center; padding: 50px 20px 20px 20px; background-color: #35A2E8; color: white; }
-        header h1 { margin: 0; font-size: 3em; }
-        header p { font-size: 1.2em; margin-top: 10px; }
-        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; padding: 40px 20px; }
-        .product { background-color: white; border: 2px solid #ccc; border-radius: 10px; width: 300px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-        .product img { width: 100%; height: auto; margin-bottom: 15px; border-radius: 5px; }
-        .product h2 { margin: 10px 0; color: #333; }
-        .product p { font-size: 0.95em; color: #555; }
-        .features { text-align: left; margin: 15px 0; }
-        .features li { margin: 5px 0; font-size: 0.95em; }
-        .product button { padding: 10px 20px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; }
-        .free button { background-color: #2196F3; color: white; }
-        .paid button { background-color: #47AD36; color: white; }
-        .video-section { max-width: 800px; margin: 50px auto; text-align: center; }
-        .video-section iframe { width: 100%; height: 450px; border-radius: 10px; }
-        .video-section p { margin-top: 15px; font-size: 1.1em; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFK Audio Trigger</title>
+<style>
+    /* Dark Mode Colors */
+    body { 
+        font-family: Arial, sans-serif; 
+        background-color: #121212; 
+        margin: 0; 
+        padding: 0; 
+        color: #e0e0e0; 
+    }
+    header { 
+        text-align: center; 
+        padding: 50px 20px 20px 20px; 
+        background-color: #1f1f1f; 
+        color: #ffffff; 
+    }
+    header h1 { margin: 0; font-size: 3em; }
+    header p { font-size: 1.2em; margin-top: 10px; color: #cccccc; }
+
+    .container { 
+        display: flex; 
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 40px; 
+        padding: 40px 20px; 
+    }
+    .product { 
+        background-color: #1e1e1e; 
+        border: 2px solid #333; 
+        border-radius: 10px; 
+        width: 300px; 
+        padding: 20px; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.5); 
+        text-align: center; 
+    }
+    .product img { width: 100%; height: auto; margin-bottom: 15px; border-radius: 5px; }
+    .product h2 { margin: 10px 0; color: #ffffff; }
+    .product p { font-size: 0.95em; color: #cccccc; }
+    .features { text-align: left; margin: 15px 0; }
+    .features li { margin: 5px 0; font-size: 0.95em; }
+    .product button { padding: 10px 20px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; font-weight:bold; }
+    .free button { background-color: #2196F3; color: white; }
+    .paid button { background-color: #47AD36; color: white; }
+
+    /* Video Section with text overlay */
+    .video-wrapper { 
+        max-width: 800px; 
+        margin: 50px auto; 
+        position: relative; 
+        border-radius: 10px; 
+        overflow: hidden; 
+    }
+    .video-wrapper p { 
+        position: absolute; 
+        top: 15px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        color: #ffffff; 
+        background: rgba(0,0,0,0.6); 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        font-size: 1.1em; 
+        z-index: 2;
+    }
+    .video-wrapper iframe { 
+        width: 100%; 
+        height: 450px; 
+        border: none; 
+        display: block; 
+    }
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>AFK Audio Trigger</h1>
-        <p>Automatically detect audio and perform keypress actions for gaming and automation environments.</p>
-    </header>
+<header>
+    <h1>AFK Audio Trigger</h1>
+    <p>Automatically detect audio and perform keypress actions for gaming and automation environments.</p>
+</header>
 
-    <div class="container">
-        <!-- Free Version -->
-        <div class="product free">
-            <img src="assets/images/AFKAudioTriggerFree.png" alt="AFK Audio Trigger Free GUI">
-            <h2>AFK Audio Trigger Free</h2>
-            <p>Basic audio detection and automatic keypress.</p>
-            <ul class="features">
-                <li>✅ Listen to audio</li>
-                <li>✅ Perform keypress</li>
-                <li>❌ Customizable settings</li>
-                <li>❌ Information box for logging sound detections</li>
-                <li>❌ Calibration feature to filter out unwanted sounds</li>
-            </ul>
-            <a href="AFK_Audio_Trigger_Free.exe"><button>Download</button></a>
-        </div>
-
-        <!-- Paid Version -->
-        <div class="product paid">
-            <img src="assets/images/AFKAudioTrigger.png" alt="AFK Audio Trigger Paid GUI">
-            <h2>AFK Audio Trigger Paid</h2>
-            <p>Full-featured version with advanced controls.</p>
-            <ul class="features">
-                <li>✅ Listen to audio</li>
-                <li>✅ Perform keypress</li>
-                <li>✅ Customizable settings</li>
-                <li>✅ Information box for logging sound detections</li>
-                <li>✅ Calibration feature to filter out unwanted sounds</li>
-            </ul>
-            <a href="purchase.html"><button>Purchase</button></a>
-        </div>
+<div class="container">
+    <!-- Free Version -->
+    <div class="product free">
+        <img src="assets/images/AFKAudioTriggerFree.png" alt="AFK Audio Trigger Free GUI">
+        <h2>AFK Audio Trigger Free</h2>
+        <p>Basic audio detection and automatic keypress.</p>
+        <ul class="features">
+            <li>✅ Listen to audio</li>
+            <li>✅ Perform keypress</li>
+            <li>❌ Customizable settings</li>
+            <li>❌ Information box for logging sound detections</li>
+            <li>❌ Calibration feature to filter out unwanted sounds</li>
+        </ul>
+        <a href="AFK_Audio_Trigger_Free.exe"><button>Download</button></a>
     </div>
 
-    <!-- Video Section -->
-    <div class="video-section">
-        <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="YouTube video" frameborder="0" allowfullscreen></iframe>
-        <p>Here is a video demonstration of what the program can be used for in a video game environment.</p>
+    <!-- Paid Version -->
+    <div class="product paid">
+        <img src="assets/images/AFKAudioTrigger.png" alt="AFK Audio Trigger Paid GUI">
+        <h2>AFK Audio Trigger Paid</h2>
+        <p>Full-featured version with advanced controls.</p>
+        <ul class="features">
+            <li>✅ Listen to audio</li>
+            <li>✅ Perform keypress</li>
+            <li>✅ Customizable settings</li>
+            <li>✅ Information box for logging sound detections</li>
+            <li>✅ Calibration feature to filter out unwanted sounds</li>
+        </ul>
+        <a href="purchase.html"><button>Purchase</button></a>
     </div>
+</div>
+
+<!-- Video Section -->
+<div class="video-wrapper">
+    <p>Here is a video demonstration of what the program can be used for in a video game environment.</p>
+    <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="YouTube video" allowfullscreen></iframe>
+</div>
 
 </body>
 </html>
