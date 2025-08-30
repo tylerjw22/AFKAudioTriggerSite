@@ -51,8 +51,8 @@
     }
   </style>
 
-  <!-- ⚠️ Use sandbox client-id while testing -->
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&components=buttons,funding-eligibility&currency=USD"></script>
+  <!-- ⚠️ Sandbox client-id (fake payments). Change currency=EUR for wider availability -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&components=buttons,funding-eligibility&currency=EUR"></script>
 </head>
 <body>
 
@@ -102,7 +102,7 @@
         createOrder: function(data, actions) {
           return actions.order.create({
             purchase_units: [{
-              amount: { value: "9.99" },
+              amount: { value: "9.99", currency_code: "EUR" }, 
               description: "AFK Audio Trigger Paid Version"
             }]
           });
@@ -111,30 +111,30 @@
           const details = await actions.order.capture();
           const email = emailInput.value.trim();
 
-          alert("Payment successful for: " + email + "\nTransaction ID: " + details.id);
+          // 🔑 Call your backend to generate a license
+          try {
+            const response = await fetch("http://127.0.0.1:8000/admin/generate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-admin-key": "Yqfhzm2p939q"
+              },
+              body: JSON.stringify({
+                user_id: email,
+                product_id: "paid",
+                paypal_id: details.id
+              })
+            });
 
-          // 🔑 Here you’d call your backend to generate license
-          // Example:
-          /*
-          const response = await fetch("http://127.0.0.1:8000/admin/generate", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-admin-key": "Yqfhzm2p939q"
-            },
-            body: JSON.stringify({
-              user_id: email,
-              product_id: "paid",
-              paypal_id: details.id
-            })
-          });
-          const dataRes = await response.json();
-          if (dataRes.code) {
-            window.location.href = "license.html?code=" + encodeURIComponent(dataRes.code);
-          } else {
-            alert("Error: No code received");
+            const dataRes = await response.json();
+            if (dataRes.code) {
+              window.location.href = "license.html?code=" + encodeURIComponent(dataRes.code);
+            } else {
+              alert("Error: No code received from server");
+            }
+          } catch (err) {
+            alert("Error contacting server: " + err);
           }
-          */
         }
       }).render('#paypal-buttons');
     });
