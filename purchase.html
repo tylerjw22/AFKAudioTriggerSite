@@ -51,8 +51,8 @@
     }
   </style>
 
-  <!-- ⚠️ Sandbox client-id (fake payments). Change currency=EUR for wider availability -->
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&components=buttons,funding-eligibility&currency=EUR"></script>
+  <!-- ⚠️ Sandbox client-id (fake payments). Currency set to AUD -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&components=buttons,funding-eligibility&currency=AUD"></script>
 </head>
 <body>
 
@@ -102,8 +102,9 @@
         createOrder: function(data, actions) {
           return actions.order.create({
             purchase_units: [{
-              amount: { value: "9.99", currency_code: "EUR" }, 
-              description: "AFK Audio Trigger Paid Version"
+              amount: { value: "9.99", currency_code: "AUD" },
+              description: "AFK Audio Trigger Paid Version",
+              category: "DIGITAL_GOODS"
             }]
           });
         },
