@@ -48,11 +48,15 @@
       try {
         const response = await fetch("http://127.0.0.1:8000/admin/generate", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: 
+          {
+            "Content-Type": "application/json" 
+            "x-admin-key": "Yqfhzm2p939q"
+          },
+          
           body: JSON.stringify({
             user_id: email,
             product_id: "paid",
-            x-admin-key: "Yqfhzm2p939q"
           })
         });
 
