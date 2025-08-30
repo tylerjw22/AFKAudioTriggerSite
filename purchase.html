@@ -28,13 +28,13 @@
     }
     h2 { color:#ffffff; margin-bottom:20px; }
     label { display:block; margin-top:15px; font-weight:bold; text-align:left; }
-    input, select { 
+    input { 
       width:100%; padding:10px; margin-top:8px; 
       border:1px solid #555; border-radius:5px; 
       font-size:1em; box-sizing:border-box; 
       background-color:#2c2c2c; color:#e0e0e0; 
     }
-    input:focus, select:focus { outline:none; border-color:#47AD36; }
+    input:focus { outline:none; border-color:#47AD36; }
     .privacy-box {
       margin-top:20px;
       padding:15px;
@@ -45,12 +45,13 @@
       color:#e0e0e0;
       text-align:left;
     }
-    #paypal-buttons {
+    #paypal-container {
       margin-top:20px;
+      display:none; /* hidden until email is valid */
     }
   </style>
 
-  <!-- PayPal SDK (replace test with your real client-id later) -->
+  <!-- PayPal SDK (replace with your real client ID later) -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&components=buttons,funding-eligibility&currency=USD"></script>
 </head>
 <body>
@@ -65,7 +66,9 @@
     </form>
 
     <!-- PayPal Buttons Container -->
-    <div id="paypal-buttons"></div>
+    <div id="paypal-container">
+      <div id="paypal-buttons"></div>
+    </div>
 
     <!-- Privacy Notice -->
     <div class="privacy-box">
@@ -75,12 +78,22 @@
 
   <script>
     const emailInput = document.getElementById("email");
+    const paypalContainer = document.getElementById("paypal-container");
+
+    // Show PayPal buttons only when email is valid
+    emailInput.addEventListener("input", () => {
+      if (emailInput.checkValidity()) {
+        paypalContainer.style.display = "block";
+      } else {
+        paypalContainer.style.display = "none";
+      }
+    });
 
     paypal.Buttons({
       onClick: function(data, actions) {
         const email = emailInput.value.trim();
-        if (!email) {
-          alert("Please enter your email before continuing.");
+        if (!emailInput.checkValidity()) {
+          alert("Please enter a valid email before continuing.");
           return actions.reject();
         }
         return actions.resolve();
@@ -113,7 +126,6 @@
 
           const dataRes = await response.json();
           if (dataRes.code) {
-            // Redirect to license page with code in query string
             window.location.href = "license.html?code=" + encodeURIComponent(dataRes.code);
           } else {
             alert("Error: No code received");
