@@ -28,11 +28,13 @@
     }
     h2 { color:#ffffff; margin-bottom:20px; }
     label { display:block; margin-top:15px; font-weight:bold; text-align:left; }
-    input, select, button { width:100%; padding:10px; margin-top:8px; border:1px solid #555; border-radius:5px; font-size:1em; box-sizing:border-box; background-color:#2c2c2c; color:#e0e0e0; }
+    input, select { 
+      width:100%; padding:10px; margin-top:8px; 
+      border:1px solid #555; border-radius:5px; 
+      font-size:1em; box-sizing:border-box; 
+      background-color:#2c2c2c; color:#e0e0e0; 
+    }
     input:focus, select:focus { outline:none; border-color:#47AD36; }
-    button { background:#FF9800; color:white; cursor:pointer; font-weight:bold; }
-    button:hover { background:#e68900; }
-    .result { margin-top:20px; padding:15px; background:#2c2c2c; border-radius:5px; word-wrap:break-word; display:none; color:#ffffff; }
     .privacy-box {
       margin-top:20px;
       padding:15px;
@@ -43,66 +45,84 @@
       color:#e0e0e0;
       text-align:left;
     }
+    #paypal-buttons {
+      margin-top:20px;
+    }
   </style>
+
+  <!-- PayPal SDK (replace test with your real client-id later) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&components=buttons,funding-eligibility&currency=USD"></script>
 </head>
 <body>
 
   <div class="purchase-box">
     <h2>Purchase AFK Audio Trigger Paid Version</h2>
+    
+    <!-- Purchase Form -->
     <form id="purchaseForm">
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required>
-
-      <label for="payment">Payment Method</label>
-      <select id="payment" name="payment" required>
-        <option value="paypal">PayPal</option>
-        <option value="card">Credit/Debit Card</option>
-      </select>
-
-      <button type="submit">Complete Purchase</button>
     </form>
+
+    <!-- PayPal Buttons Container -->
+    <div id="paypal-buttons"></div>
 
     <!-- Privacy Notice -->
     <div class="privacy-box">
       AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong> with third parties. You can request access to or deletion of your email at any time by contacting us at <strong>[your support email here]</strong>.
     </div>
-
-    <div id="result" class="result"></div>
   </div>
 
   <script>
-    document.getElementById("purchaseForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+    const emailInput = document.getElementById("email");
 
-      const email = document.getElementById("email").value;
-      const payment = document.getElementById("payment").value;
-
-      alert("Payment successful via " + payment + "! Generating license...");
-
-      try {
-        const response = await fetch("http://127.0.0.1:8000/admin/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-admin-key": "Yqfhzm2p939q"
-          },
-          body: JSON.stringify({
-            user_id: email,
-            product_id: "paid"
-          })
-        });
-
-        const data = await response.json();
-        if (data.code) {
-          // Redirect to license page with code in query string
-          window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-        } else {
-          alert("Error: No code received");
+    paypal.Buttons({
+      onClick: function(data, actions) {
+        const email = emailInput.value.trim();
+        if (!email) {
+          alert("Please enter your email before continuing.");
+          return actions.reject();
         }
-      } catch (err) {
-        alert("Error contacting server: " + err);
+        return actions.resolve();
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: "9.99" }, // set your price here
+            description: "AFK Audio Trigger Paid Version"
+          }]
+        });
+      },
+      onApprove: async function(data, actions) {
+        const details = await actions.order.capture();
+        const email = emailInput.value.trim();
+
+        try {
+          const response = await fetch("http://127.0.0.1:8000/admin/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-admin-key": "Yqfhzm2p939q"
+            },
+            body: JSON.stringify({
+              user_id: email,
+              product_id: "paid",
+              paypal_id: details.id
+            })
+          });
+
+          const dataRes = await response.json();
+          if (dataRes.code) {
+            // Redirect to license page with code in query string
+            window.location.href = "license.html?code=" + encodeURIComponent(dataRes.code);
+          } else {
+            alert("Error: No code received");
+          }
+        } catch (err) {
+          alert("Error contacting server: " + err);
+        }
       }
-    });
+    }).render('#paypal-buttons');
   </script>
 
 </body>
