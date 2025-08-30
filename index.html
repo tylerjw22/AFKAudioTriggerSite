@@ -5,124 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AFK Audio Trigger</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            text-align: center;
-            padding: 50px 20px 20px 20px;
-            background-color: #1a89b1;
-            color: white;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-        }
-
-        header p {
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            padding: 40px 20px;
-        }
-
-        .product {
-            background-color: white;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            width: 300px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .product img {
-            width: 100%;
-            height: auto;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .product h2 {
-            margin: 10px 0;
-            color: #333;
-        }
-
-        .product p {
-            font-size: 0.95em;
-            color: #555;
-        }
-
-        .features {
-            text-align: left;
-            margin: 15px 0;
-        }
-
-        .features li {
-            margin: 5px 0;
-            font-size: 0.95em;
-        }
-
-        .product button {
-            padding: 10px 20px;
-            font-size: 1em;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .free button {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .paid button {
-            background-color: #47AD36;
-            color: white;
-        }
-
-        .video-section {
-            max-width: 800px;
-            margin: 50px auto;
-            text-align: center;
-        }
-
-        .video-section iframe {
-            width: 100%;
-            height: 450px;
-            border-radius: 10px;
-        }
-
-        .video-section p {
-            margin-top: 15px;
-            font-size: 1.1em;
-        }
-
-        @media (max-width: 700px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .product {
-                width: 90%;
-            }
-
-            .video-section iframe {
-                height: 250px;
-            }
-        }
+        body { font-family: Arial, sans-serif; background-color: #f2f2f2; margin: 0; padding: 0; }
+        header { text-align: center; padding: 50px 20px 20px 20px; background-color: #4CAF50; color: white; }
+        header h1 { margin: 0; font-size: 3em; }
+        header p { font-size: 1.2em; margin-top: 10px; }
+        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; padding: 40px 20px; }
+        .product { background-color: white; border: 2px solid #ccc; border-radius: 10px; width: 300px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        .product img { width: 100%; height: auto; margin-bottom: 15px; border-radius: 5px; }
+        .product h2 { margin: 10px 0; color: #333; }
+        .product p { font-size: 0.95em; color: #555; }
+        .features { text-align: left; margin: 15px 0; }
+        .features li { margin: 5px 0; font-size: 0.95em; }
+        .product button { padding: 10px 20px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; }
+        .free button { background-color: #2196F3; color: white; }
+        .paid button { background-color: #47AD36; color: white; }
+        .video-section { max-width: 800px; margin: 50px auto; text-align: center; }
+        .video-section iframe { width: 100%; height: 450px; border-radius: 10px; }
+        .video-section p { margin-top: 15px; font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -135,7 +34,7 @@
     <div class="container">
         <!-- Free Version -->
         <div class="product free">
-            <img src="assets/images/AFKAudioTriggerFree.png" alt="AFK Audio Trigger Free GUI">
+            <img src="path_to_free_version_gui_image.png" alt="AFK Audio Trigger Free GUI">
             <h2>AFK Audio Trigger Free</h2>
             <p>Basic audio detection and automatic keypress.</p>
             <ul class="features">
@@ -145,12 +44,12 @@
                 <li>❌ Information box for logging sound detections</li>
                 <li>❌ Calibration feature to filter out unwanted sounds</li>
             </ul>
-            <button>Download</button>
+            <a href="AFK_Audio_Trigger_Free.exe"><button>Download</button></a>
         </div>
 
         <!-- Paid Version -->
         <div class="product paid">
-            <img src="assets/images/AFKAudioTrigger.png" alt="AFK Audio Trigger Paid GUI">
+            <img src="path_to_paid_version_gui_image.png" alt="AFK Audio Trigger Paid GUI">
             <h2>AFK Audio Trigger Paid</h2>
             <p>Full-featured version with advanced controls.</p>
             <ul class="features">
@@ -160,7 +59,7 @@
                 <li>✅ Information box for logging sound detections</li>
                 <li>✅ Calibration feature to filter out unwanted sounds</li>
             </ul>
-            <button>Purchase</button>
+            <a href="purchase.html"><button>Purchase</button></a>
         </div>
     </div>
 
