@@ -36,38 +36,39 @@
   </div>
 
   <script>
-    document.getElementById("purchaseForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+  document.getElementById("purchaseForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
 
-      const email = document.getElementById("email").value;
-      const payment = document.getElementById("payment").value;
+    const email = document.getElementById("email").value;
+    const payment = document.getElementById("payment").value;
 
-      // Simulate payment success (in real world you'd integrate PayPal/Stripe SDK here)
-      alert("Payment successful via " + payment + "! Generating license...");
+    alert("Payment successful via " + payment + "! Generating license...");
 
-      try {
-        const response = await fetch("http://127.0.0.1:8000/admin/generate", {
-          method: "POST",
-          headers: 
-          {
-            "Content-Type": "application/json",
-            "x-admin-key": "Yqfhzm2p939q"
-          },
-          
-          body: JSON.stringify({
-            user_id: email,
-            product_id: "paid",
-          })
-        });
+    try {
+      const response = await fetch("http://127.0.0.1:8000/admin/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": "Yqfhzm2p939q"
+        },
+        body: JSON.stringify({
+          user_id: email,
+          product_id: "paid"
+        })
+      });
 
-        const data = await response.json();
-        document.getElementById("result").style.display = "block";
-        document.getElementById("result").innerText = "Your License Code: " + JSON.stringify(data);
-      } catch (err) {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("result").innerText = "Error contacting server: " + err;
+      const data = await response.json();
+      if (data.code) {
+        // Redirect to license page with code in query string
+        window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+      } else {
+        alert("Error: No code received");
       }
-    });
-  </script>
+    } catch (err) {
+      alert("Error contacting server: " + err);
+    }
+  });
+</script>
+
 </body>
 </html>
