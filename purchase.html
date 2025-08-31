@@ -94,7 +94,7 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-admin-key": "Yqfhzm2p939q"
+            "x-admin-key": ${{ secrets.ADMIN_KEY }}
           },
           body: JSON.stringify({
             user_id: emailInput.value,
