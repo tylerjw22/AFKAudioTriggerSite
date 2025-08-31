@@ -4,42 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AFK Audio Trigger</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-    /* Dark Mode Colors */
+    /* Global Styles */
     body { 
-        font-family: 'Poppins', Arial, sans-serif; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         background-color: #121212; 
         margin: 0; 
         padding: 0; 
         color: #e0e0e0; 
+        line-height: 1.6;
     }
 
+    /* Header */
     header { 
         text-align: center; 
-        padding: 60px 20px 40px 20px; 
-        background: linear-gradient(135deg, #1f1f1f, #2b2b2b);
-        border-bottom: 2px solid #2e2e2e;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        padding: 30px 20px; 
+        background: linear-gradient(135deg, #1f1f1f, #2a2a2a); 
+        color: #66c0ba; 
+        border-bottom: 2px solid #333;
     }
     header h1 { 
         margin: 0; 
-        font-size: 3.2em; 
+        font-size: 2.4em; 
         font-weight: 700; 
-        letter-spacing: 1px;
-        color: #66c2b9; 
-        text-shadow: 0 0 10px rgba(102, 157, 152, 0.6);
+        letter-spacing: 1px; 
     }
     header p { 
-        font-size: 1.15em; 
-        margin-top: 15px; 
-        color: #b3b3b3; 
-        max-width: 700px; 
-        margin-left: auto; 
-        margin-right: auto;
-        line-height: 1.5;
+        font-size: 1.1em; 
+        margin-top: 8px; 
+        color: #bbbbbb; 
     }
 
+    /* Product Cards */
     .container { 
         display: flex; 
         justify-content: center; 
@@ -49,27 +45,75 @@
     }
     .product { 
         background-color: #1e1e1e; 
-        border: 2px solid #333; 
-        border-radius: 10px; 
+        border: 1px solid #333; 
+        border-radius: 12px; 
         width: 300px; 
-        padding: 20px; 
-        box-shadow: 0 4px 6px rgba(0,0,0,0.5); 
+        padding: 25px; 
+        box-shadow: 0 6px 12px rgba(0,0,0,0.5); 
         text-align: center; 
+        transition: transform 0.2s, box-shadow 0.2s;
     }
-    .product img { width: 100%; height: auto; margin-bottom: 15px; border-radius: 5px; }
-    .product h2 { margin: 10px 0; color: #ffffff; }
-    .product p { font-size: 0.95em; color: #cccccc; }
-    .features { text-align: left; margin: 15px 0; }
-    .features li { margin: 5px 0; font-size: 0.95em; }
-    .product button { padding: 10px 20px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; font-weight:bold; }
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 18px rgba(0,0,0,0.6);
+    }
+    .product img { 
+        width: 100%; 
+        height: auto; 
+        margin-bottom: 15px; 
+        border-radius: 6px; 
+    }
+    .product h2 { 
+        margin: 10px 0; 
+        color: #ffffff; 
+        font-size: 1.4em;
+    }
+    .product p { 
+        font-size: 0.95em; 
+        color: #cccccc; 
+    }
+    .features { 
+        text-align: left; 
+        margin: 15px 0; 
+        padding-left: 0; 
+        list-style: none;
+    }
+    .features li { 
+        margin: 6px 0; 
+        font-size: 0.95em; 
+        display: flex; 
+        align-items: center; 
+    }
+    .features li::before {
+        content: "✔"; 
+        color: #4CAF50; 
+        margin-right: 8px; 
+        font-weight: bold;
+    }
+    .features li.unavailable::before {
+        content: "✖"; 
+        color: #e74c3c; 
+    }
+    .product button { 
+        padding: 10px 20px; 
+        font-size: 1em; 
+        border: none; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-weight: bold; 
+        transition: background-color 0.2s, transform 0.1s;
+    }
+    .product button:hover {
+        transform: scale(1.05);
+    }
     .free button { background-color: #2196F3; color: white; }
     .paid button { background-color: #47AD36; color: white; }
 
     /* Verified Badge */
     .verified-badge {
         display: inline-block;
-        margin-top: 10px;
-        padding: 6px 12px;
+        margin-top: 12px;
+        padding: 6px 14px;
         font-size: 0.85em;
         font-weight: bold;
         color: #4CAF50;
@@ -78,34 +122,26 @@
         border-radius: 20px;
     }
     .verified-badge::before {
-        content: "✔️ ";
+        content: "✔ Secure • ";
     }
 
-    /* Video Section with text overlay */
-    .video-wrapper { 
+    /* Video Section */
+    .video-section { 
         max-width: 800px; 
         margin: 50px auto; 
-        position: relative; 
-        border-radius: 10px; 
-        overflow: hidden; 
+        text-align: center; 
+        padding: 20px; 
     }
-    .video-wrapper p { 
-        position: absolute; 
-        top: 15px; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        color: #ffffff; 
-        background: rgba(0,0,0,0.6); 
-        padding: 10px 20px; 
-        border-radius: 5px; 
+    .video-section p { 
+        margin-bottom: 15px; 
         font-size: 1.1em; 
-        z-index: 2;
+        color: #dddddd;
     }
-    .video-wrapper iframe { 
+    .video-section iframe { 
         width: 100%; 
         height: 450px; 
+        border-radius: 10px; 
         border: none; 
-        display: block; 
     }
 </style>
 </head>
@@ -123,16 +159,16 @@
         <h2>AFK Audio Trigger Free</h2>
         <p>Basic audio detection and automatic keypress (can only press "E").</p>
         <ul class="features">
-            <li>✅ Monitors audio levels</li>
-            <li>✅ Performs keypresses</li>
-            <li>❌ Customizable settings</li>
-            <li>❌ Information box for logging sound detections</li>
-            <li>❌ Custom keypress (free version can only press "e")</li>
-            <li>❌ Calibration feature to filter out unwanted sounds</li>
-            <li>❌ No false detections</li>
+            <li>Monitors audio levels</li>
+            <li>Performs keypresses</li>
+            <li class="unavailable">Customizable settings</li>
+            <li class="unavailable">Information box for logging sound detections</li>
+            <li class="unavailable">Custom keypress (free version can only press "e")</li>
+            <li class="unavailable">Calibration feature to filter out unwanted sounds</li>
+            <li class="unavailable">No false detections</li>
         </ul>
         <a href="AFK_Audio_Trigger_Free.exe"><button>Download</button></a>
-        <div class="verified-badge">Verified no ads, no malware</div>
+        <div class="verified-badge">No ads, no malware</div>
     </div>
 
     <!-- Paid Version -->
@@ -141,26 +177,23 @@
         <h2>AFK Audio Trigger Paid</h2>
         <p>Full-featured version with advanced controls.</p>
         <ul class="features">
-            <li>✅ Monitors audio levels</li>
-            <li>✅ Performs keypresses</li>
-            <li>✅ Customizable settings</li>
-            <li>✅ Information box for logging sound detections</li>
-            <li>✅ Custom keypress</li>
-            <li>✅ Calibration feature to filter out unwanted sounds</li>
-            <li>✅ No false detections (when calibrated correctly)</li>
+            <li>Monitors audio levels</li>
+            <li>Performs keypresses</li>
+            <li>Customizable settings</li>
+            <li>Information box for logging sound detections</li>
+            <li>Custom keypress</li>
+            <li>Calibration feature to filter out unwanted sounds</li>
+            <li>No false detections (when calibrated correctly)</li>
         </ul>
         <a href="purchase.html"><button>Purchase</button></a>
-        <div class="verified-badge">Verified no ads, no malware</div>
+        <div class="verified-badge">No ads, no malware</div>
     </div>
 </div>
 
 <!-- Video Section -->
-<div class="video-section" style="max-width:800px; margin:50px auto; text-align:center;">
-    <p style="margin-bottom:15px; font-size:1.1em; color:#ffffff;">
-        Here is a video demonstration of what the program can be used for in a video game environment.
-    </p>
-    <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="YouTube video" frameborder="0" allowfullscreen
-        style="width:100%; height:450px; border-radius:10px;"></iframe>
+<div class="video-section">
+    <p>Here is a video demonstration of what the program can be used for in a video game environment.</p>
+    <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="YouTube video" allowfullscreen></iframe>
 </div>
 
 </body>
