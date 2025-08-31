@@ -28,10 +28,8 @@
     }
     h2 { color:#ffffff; margin-bottom:20px; }
     label { display:block; margin-top:15px; font-weight:bold; text-align:left; }
-    input, select, button { width:100%; padding:10px; margin-top:8px; border:1px solid #555; border-radius:5px; font-size:1em; box-sizing:border-box; background-color:#2c2c2c; color:#e0e0e0; }
-    input:focus, select:focus { outline:none; border-color:#47AD36; }
-    button { background:#FF9800; color:white; cursor:pointer; font-weight:bold; }
-    button:hover { background:#e68900; }
+    input { width:100%; padding:10px; margin-top:8px; border:1px solid #555; border-radius:5px; font-size:1em; box-sizing:border-box; background-color:#2c2c2c; color:#e0e0e0; }
+    input:focus { outline:none; border-color:#47AD36; }
     .result { margin-top:20px; padding:15px; background:#2c2c2c; border-radius:5px; word-wrap:break-word; display:none; color:#ffffff; }
     .privacy-box {
       margin-top:20px;
@@ -43,28 +41,19 @@
       color:#e0e0e0;
       text-align:left;
     }
-    #paypal-button-container { margin-top:20px; }
+    #paypal-button-container { margin-top:20px; display:none; }
   </style>
 </head>
 <body>
 
   <div class="purchase-box">
     <h2>Purchase AFK Audio Trigger Paid Version</h2>
-    <form id="purchaseForm">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
 
-      <label for="payment">Payment Method</label>
-      <select id="payment" name="payment" required>
-        <option value="paypal">PayPal</option>
-        <option value="card">Credit/Debit Card</option>
-      </select>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-      <button type="submit">Proceed to Payment</button>
-    </form>
-
-    <!-- PayPal Button Placeholder -->
-    <div id="paypal-button-container" style="display:none;"></div>
+    <!-- PayPal + Card Buttons -->
+    <div id="paypal-button-container"></div>
 
     <!-- Privacy Notice -->
     <div class="privacy-box">
@@ -74,67 +63,68 @@
     <div id="result" class="result"></div>
   </div>
 
-  <!-- PayPal SDK -->
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=AUD&components=buttons"></script>
+  <!-- PayPal SDK (with PayPal + Card buttons enabled) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=AUD&components=buttons,funding-eligibility&enable-funding=card"></script>
 
   <script>
-    const form = document.getElementById("purchaseForm");
+    const emailInput = document.getElementById("email");
     const paypalContainer = document.getElementById("paypal-button-container");
-    const resultBox = document.getElementById("result");
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const payment = document.getElementById("payment").value;
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
 
-      if (!email) {
-        alert("Please enter your email before continuing.");
-        return;
-      }
+    emailInput.addEventListener("input", function() {
+      if (validateEmail(emailInput.value)) {
+        paypalContainer.style.display = "block";
 
-      // Show fake PayPal button
-      paypalContainer.style.display = "block";
-      paypalContainer.innerHTML = ""; // reset container
+        // Only render PayPal buttons once
+        if (!paypalContainer.hasChildNodes()) {
+          paypal.Buttons({
+            createOrder: function (data, actions) {
+              return actions.order.create({
+                purchase_units: [{
+                  amount: { value: "9.99", currency_code: "AUD" },
+                  description: "AFK Audio Trigger (Virtual Product)"
+                }]
+              });
+            },
+            onApprove: function (data, actions) {
+              // Fake success — no PayPal login required
+              return new Promise(function(resolve) {
+                alert("✅ Simulated payment successful! Generating license...");
+                resolve();
 
-      paypal.Buttons({
-        createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: { value: "9.99", currency_code: "AUD" },
-              description: "AFK Audio Trigger (Virtual Product)"
-            }]
-          });
-        },
-        onApprove: function (data, actions) {
-          // Fake success — no PayPal login required
-          return new Promise(function(resolve) {
-            alert("✅ Simulated payment successful via " + payment + "! Generating license...");
-            resolve();
-
-            // Call your backend to generate license
-            fetch("http://127.0.0.1:8000/admin/generate", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-admin-key": "Yqfhzm2p939q"
-              },
-              body: JSON.stringify({
-                user_id: email,
-                product_id: "paid"
-              })
-            })
-            .then(res => res.json())
-            .then(data => {
-              if (data.code) {
-                window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-              } else {
-                alert("Error: No license code received");
-              }
-            })
-            .catch(err => alert("Error contacting server: " + err));
-          });
+                // Call backend to generate license
+                fetch("http://127.0.0.1:8000/admin/generate", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "x-admin-key": "Yqfhzm2p939q"
+                  },
+                  body: JSON.stringify({
+                    user_id: emailInput.value,
+                    product_id: "paid"
+                  })
+                })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.code) {
+                    window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+                  } else {
+                    alert("Error: No license code received");
+                  }
+                })
+                .catch(err => alert("Error contacting server: " + err));
+              });
+            }
+          }).render('#paypal-button-container');
         }
-      }).render('#paypal-button-container');
+
+      } else {
+        paypalContainer.style.display = "none";
+        paypalContainer.innerHTML = ""; // reset
+      }
     });
   </script>
 
