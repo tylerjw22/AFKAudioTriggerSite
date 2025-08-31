@@ -47,6 +47,22 @@
     .free button { background-color: #2196F3; color: white; }
     .paid button { background-color: #47AD36; color: white; }
 
+    /* Verified Badge */
+    .verified-badge {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 6px 12px;
+        font-size: 0.85em;
+        font-weight: bold;
+        color: #4CAF50;
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid #4CAF50;
+        border-radius: 20px;
+    }
+    .verified-badge::before {
+        content: "✔️ ";
+    }
+
     /* Video Section with text overlay */
     .video-wrapper { 
         max-width: 800px; 
@@ -97,6 +113,7 @@
             <li>❌ Calibration feature to filter out unwanted sounds</li>
         </ul>
         <a href="AFK_Audio_Trigger_Free.exe"><button>Download</button></a>
+        <div class="verified-badge">Verified Safe Download</div>
     </div>
 
     <!-- Paid Version -->
@@ -113,6 +130,7 @@
             <li>✅ Calibration feature to filter out unwanted sounds</li>
         </ul>
         <a href="purchase.html"><button>Purchase</button></a>
+        <div class="verified-badge">Verified Safe Download</div>
     </div>
 </div>
 
