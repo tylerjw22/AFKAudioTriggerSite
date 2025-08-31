@@ -75,11 +75,7 @@
   function renderPayPalButton(email) {
     paypalContainer.innerHTML = ""; // clear any previous render
     paypal.Buttons({
-      style: {
-        color: 'blue',
-        shape: 'rect',
-        label: 'paypal'
-      },
+      style: { color: 'blue', shape: 'rect', label: 'paypal' },
       createOrder: function(data, actions) {
         return actions.order.create({
           purchase_units: [{
@@ -93,32 +89,34 @@
         });
       },
       onApprove: function(data, actions) {
-        return actions.order.capture().then(function(orderData) {
-          // Call backend to generate license
-          return fetch("http://127.0.0.1:8000/admin/generate", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-admin-key": "Yqfhzm2p939q"
-            },
-            body: JSON.stringify({
-              user_id: email,
-              product_id: "paid"
-            })
+        // First contact your server BEFORE capturing payment
+        return fetch("http://127.0.0.1:8000/admin/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": "Yqfhzm2p939q"
+          },
+          body: JSON.stringify({
+            user_id: emailInput.value,
+            product_id: "paid"
           })
-          .then(res => res.json())
-          .then(data => {
-            if (data.code) {
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.code) {
+            // Server OK → capture the payment
+            return actions.order.capture().then(function(orderData) {
               window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-            } else {
-              alert("❌ Cannot generate license. Please try again later.");
-              return actions.order.cancel();
-            }
-          })
-          .catch(err => {
-            alert("❌ Cannot connect to server. Try again later.");
-            return actions.order.cancel();
-          });
+            });
+          } else {
+            // Server didn't return code → cancel payment
+            alert("❌ Cannot generate license. Payment canceled. Try again later.");
+            throw new Error("License generation failed");
+          }
+        })
+        .catch(err => {
+          alert("❌ Cannot connect to server. Payment canceled. Try again later.");
+          throw err; // prevents capture
         });
       }
     }).render('#paypal-container');
