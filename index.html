@@ -29,7 +29,7 @@
         font-weight: 700; 
         letter-spacing: 1px; 
         color: #66c0ba;
-        text-shadow: 0 0 8px #66c0ba, 0 0 16px #33fff3;
+        text-shadow: 0 0 3px #66c0ba, 0 0 6px #33fff3;
         animation: glow 2s ease-in-out infinite alternate;
     }
     header p { 
@@ -38,15 +38,14 @@
         color: #bbbbbb; 
     }
 
-/* Glow animation */
-@keyframes glow {
-    from {
-        text-shadow: 0 0 6px #66c0ba, 0 0 12px #33fff3, 0 0 18px #00ffe0;
+    @keyframes glow {
+        from {
+            text-shadow: 0 0 2px #66c0ba, 0 0 5px #33fff3;
+        }
+        to {
+            text-shadow: 0 0 4px #66c0ba, 0 0 8px #33fff3;
+        }
     }
-    to {
-        text-shadow: 0 0 12px #33fff3, 0 0 20px #00ffe0, 0 0 28px #00e5ff;
-    }
-}
 
     /* Product Cards */
     .container { 
