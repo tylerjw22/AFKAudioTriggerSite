@@ -30,7 +30,6 @@
     label { display:block; margin-top:15px; font-weight:bold; text-align:left; }
     input { width:100%; padding:10px; margin-top:8px; border:1px solid #555; border-radius:5px; font-size:1em; box-sizing:border-box; background-color:#2c2c2c; color:#e0e0e0; }
     input:focus { outline:none; border-color:#47AD36; }
-    .result { margin-top:20px; padding:15px; background:#2c2c2c; border-radius:5px; word-wrap:break-word; display:none; color:#ffffff; }
     .privacy-box {
       margin-top:20px;
       padding:15px;
@@ -41,28 +40,9 @@
       color:#e0e0e0;
       text-align:left;
     }
-    #button-container { margin-top:20px; display:none; }
-    .fake-btn {
-      display:block;
-      width:100%;
-      padding:12px;
-      margin:8px 0;
-      border:none;
-      border-radius:5px;
-      font-size:1em;
-      cursor:pointer;
-      font-weight:bold;
-    }
-    .paypal-btn {
-      background-color:#ffc439;
-      color:#111;
-    }
-    .card-btn {
-      background-color:#009cde;
-      color:#fff;
-    }
-    .fake-btn:active {
-      opacity:0.8;
+    #paypal-container { 
+      margin-top:20px; 
+      display:none; /* hidden until valid email */
     }
   </style>
 </head>
@@ -74,69 +54,86 @@
     <label for="email">Email</label>
     <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-    <!-- Fake PayPal + Card Buttons -->
-    <div id="button-container">
-      <button class="fake-btn paypal-btn">Pay with PayPal</button>
-      <button class="fake-btn card-btn">Pay with Card</button>
-      <div style="font-size:0.8em; margin-top:5px; color:#aaa;">Powered by PayPal (Simulated)</div>
-    </div>
+    <!-- Real PayPal button -->
+    <div id="paypal-container"></div>
 
     <!-- Privacy Notice -->
     <div class="privacy-box">
-      AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong> with third parties. You can request access to or deletion of your email at any time by contacting us at <strong>[your support email here]</strong>.
+      AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong>. 
+      Contact us at <strong>[your support email here]</strong> for data removal.
     </div>
-
-    <div id="result" class="result"></div>
   </div>
 
+  <!-- Load PayPal SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=AUD&intent=capture"></script>
   <script>
     const emailInput = document.getElementById("email");
-    const buttonContainer = document.getElementById("button-container");
-    const resultBox = document.getElementById("result");
+    const paypalContainer = document.getElementById("paypal-container");
 
     function validateEmail(email) {
       return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
     }
 
+    // Show PayPal button only if email valid
     emailInput.addEventListener("input", function() {
       if (validateEmail(emailInput.value)) {
-        buttonContainer.style.display = "block";
+        paypalContainer.style.display = "block";
       } else {
-        buttonContainer.style.display = "none";
+        paypalContainer.style.display = "none";
       }
     });
 
-    function fakePayment(method) {
-      alert("✅ Simulated " + method + " payment successful! Generating license...");
-
-      fetch("http://127.0.0.1:8000/admin/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-key": "Yqfhzm2p939q"
-        },
-        body: JSON.stringify({
-          user_id: emailInput.value,
-          product_id: "paid"
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.code) {
-          window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-        } else {
-          resultBox.style.display = "block";
-          resultBox.innerText = "Error: No license code received.";
-        }
-      })
-      .catch(err => {
-        resultBox.style.display = "block";
-        resultBox.innerText = "Error contacting server: " + err;
-      });
-    }
-
-    document.querySelector(".paypal-btn").addEventListener("click", () => fakePayment("PayPal"));
-    document.querySelector(".card-btn").addEventListener("click", () => fakePayment("Card"));
+    // Render PayPal button
+    paypal.Buttons({
+      style: {
+        color: 'blue',  // Make button blue
+        shape: 'rect',
+        label: 'paypal'
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              currency_code: "AUD",
+              value: "9.99"
+            },
+            description: "AFK Audio Trigger Paid Version",
+            category: "DIGITAL_GOODS" // digital only, no delivery
+          }],
+          application_context: {
+            shipping_preference: "NO_SHIPPING" // removes delivery requirement
+          }
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(orderData) {
+          // Call backend to generate license
+          fetch("http://127.0.0.1:8000/admin/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-admin-key": "Yqfhzm2p939q"
+            },
+            body: JSON.stringify({
+              user_id: emailInput.value,
+              product_id: "paid"
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.code) {
+              // Redirect to license page with code
+              window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+            } else {
+              alert("Error: No license code received.");
+            }
+          })
+          .catch(err => {
+            alert("Error contacting server: " + err);
+          });
+        });
+      }
+    }).render('#paypal-container');
   </script>
 
 </body>
