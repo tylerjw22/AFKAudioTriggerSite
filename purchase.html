@@ -6,55 +6,117 @@
   <title>Purchase AFK Audio Trigger</title>
   <style>
     body { 
-      font-family: Arial, sans-serif; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
       background-color: #121212; 
       margin:0; 
-      height:100vh; 
-      display:flex; 
-      justify-content:center; 
-      align-items:center; 
-      padding:20px;
+      padding:0;
       color: #e0e0e0;
     }
+
+    /* Header */
+    header { 
+      text-align: center; 
+      padding: 20px; 
+      background: linear-gradient(135deg, #1f1f1f, #2a2a2a); 
+      border-bottom: 2px solid #333;
+    }
+    header h1 { 
+      margin: 0; 
+      font-size: 1.9em; 
+      font-weight: 700; 
+      letter-spacing: 1px; 
+      color: #66c0ba;
+      text-shadow: 0 0 4px rgba(102, 157, 152, 0.6);
+    }
+
+    /* Purchase Box */
     .purchase-box { 
       background-color: #1e1e1e; 
-      padding:30px; 
+      padding:40px; 
       max-width:500px; 
-      width:100%;
-      border:2px solid #333; 
-      border-radius:10px; 
-      box-shadow:0 4px 6px rgba(0,0,0,0.5); 
+      margin: 60px auto;
+      border:1px solid #333; 
+      border-radius:12px; 
+      box-shadow:0 6px 12px rgba(0,0,0,0.5); 
       text-align:center;
     }
-    h2 { color:#ffffff; margin-bottom:20px; }
-    label { display:block; margin-top:15px; font-weight:bold; text-align:left; }
-    input { width:100%; padding:10px; margin-top:8px; border:1px solid #555; border-radius:5px; font-size:1em; box-sizing:border-box; background-color:#2c2c2c; color:#e0e0e0; }
-    input:focus { outline:none; border-color:#47AD36; }
+    .purchase-box h2 { 
+      color:#ffffff; 
+      margin-bottom:20px; 
+      font-size: 1.5em;
+    }
+    label { 
+      display:block; 
+      margin-top:15px; 
+      font-weight:bold; 
+      text-align:left; 
+    }
+    input { 
+      width:100%; 
+      padding:12px; 
+      margin-top:8px; 
+      border:1px solid #555; 
+      border-radius:6px; 
+      font-size:1em; 
+      box-sizing:border-box; 
+      background-color:#2c2c2c; 
+      color:#e0e0e0; 
+    }
+    input:focus { 
+      outline:none; 
+      border-color:#47AD36; 
+      box-shadow:0 0 4px rgba(71,173,54,0.7); 
+    }
+
+    /* Verified Badge */
+    .verified-badge {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 6px 14px;
+        font-size: 0.85em;
+        font-weight: bold;
+        color: #4CAF50;
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid #4CAF50;
+        border-radius: 20px;
+    }
+    .verified-badge::before {
+        content: "✔ Secure • ";
+    }
+
+    /* Privacy box */
     .privacy-box {
-      margin-top:20px;
+      margin-top:25px;
       padding:15px;
       background:#1f1f1f;
       border-left:4px solid #2196F3;
-      border-radius:5px;
+      border-radius:6px;
       font-size:0.9em;
-      color:#e0e0e0;
+      color:#cccccc;
       text-align:left;
     }
+
     #paypal-container { 
-      margin-top:20px; 
+      margin-top:25px; 
       display:none; /* hidden until valid email */
     }
   </style>
 </head>
 <body>
 
+<header>
+  <h1>AFK Audio Trigger</h1>
+</header>
+
 <div class="purchase-box">
-  <h2>Purchase AFK Audio Trigger Paid Version</h2>
+  <h2>Purchase Paid Version</h2>
 
   <label for="email">Email</label>
   <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
   <div id="paypal-container"></div>
+  
+  <div class="verified-badge">No ads, no malware</div>
 
   <div class="privacy-box">
     AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong>. 
@@ -89,7 +151,6 @@
         });
       },
       onApprove: function(data, actions) {
-        // First contact your server BEFORE capturing payment
         return fetch("http://127.0.0.1:8000/admin/generate", {
           method: "POST",
           headers: {
@@ -104,19 +165,17 @@
         .then(res => res.json())
         .then(data => {
           if (data.code) {
-            // Server OK → capture the payment
             return actions.order.capture().then(function(orderData) {
               window.location.href = "license.html?code=" + encodeURIComponent(data.code);
             });
           } else {
-            // Server didn't return code → cancel payment
             alert("❌ Cannot generate license. Payment canceled. Try again later.");
             throw new Error("License generation failed");
           }
         })
         .catch(err => {
           alert("❌ Cannot connect to server. Payment canceled. Try again later.");
-          throw err; // prevents capture
+          throw err;
         });
       }
     }).render('#paypal-container');
