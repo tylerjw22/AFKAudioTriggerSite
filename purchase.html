@@ -42,7 +42,7 @@
     }
     #paypal-container { 
       margin-top:20px; 
-      display:none; /* hidden until valid email */
+      display:none;
     }
   </style>
 </head>
@@ -54,7 +54,7 @@
     <label for="email">Email</label>
     <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-    <!-- Real PayPal button -->
+    <!-- PayPal button container -->
     <div id="paypal-container"></div>
 
     <!-- Privacy Notice -->
@@ -69,71 +69,79 @@
   <script>
     const emailInput = document.getElementById("email");
     const paypalContainer = document.getElementById("paypal-container");
+    let paypalRendered = false;
 
     function validateEmail(email) {
-      return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    // Show PayPal button only if email valid
+    function renderPayPalButton(email) {
+      paypalContainer.innerHTML = ""; // clear previous render
+      paypal.Buttons({
+        style: {
+          color: 'blue',  // Make button blue
+          shape: 'rect',
+          label: 'paypal'
+        },
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                currency_code: "AUD",
+                value: "9.99"
+              },
+              description: "AFK Audio Trigger Paid Version",
+              category: "DIGITAL_GOODS"
+            }],
+            application_context: {
+              shipping_preference: "NO_SHIPPING" // no delivery
+            }
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(orderData) {
+            // Call backend to generate license
+            fetch("http://127.0.0.1:8000/admin/generate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-admin-key": "Yqfhzm2p939q"
+              },
+              body: JSON.stringify({
+                user_id: email,
+                product_id: "paid"
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.code) {
+                window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+              } else {
+                alert("Error: No license code received.");
+              }
+            })
+            .catch(err => {
+              alert("Error contacting server: " + err);
+            });
+          });
+        }
+      }).render('#paypal-container');
+    }
+
+    // Watch email input
     emailInput.addEventListener("input", function() {
       if (validateEmail(emailInput.value)) {
         paypalContainer.style.display = "block";
+        if (!paypalRendered) {
+          renderPayPalButton(emailInput.value);
+          paypalRendered = true;
+        }
       } else {
         paypalContainer.style.display = "none";
+        paypalContainer.innerHTML = "";
+        paypalRendered = false;
       }
     });
-
-    // Render PayPal button
-    paypal.Buttons({
-      style: {
-        color: 'blue',  // Make button blue
-        shape: 'rect',
-        label: 'paypal'
-      },
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              currency_code: "AUD",
-              value: "9.99"
-            },
-            description: "AFK Audio Trigger Paid Version",
-            category: "DIGITAL_GOODS" // digital only, no delivery
-          }],
-          application_context: {
-            shipping_preference: "NO_SHIPPING" // removes delivery requirement
-          }
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(orderData) {
-          // Call backend to generate license
-          fetch("http://127.0.0.1:8000/admin/generate", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-admin-key": "Yqfhzm2p939q"
-            },
-            body: JSON.stringify({
-              user_id: emailInput.value,
-              product_id: "paid"
-            })
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.code) {
-              // Redirect to license page with code
-              window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-            } else {
-              alert("Error: No license code received.");
-            }
-          })
-          .catch(err => {
-            alert("Error contacting server: " + err);
-          });
-        });
-      }
-    }).render('#paypal-container');
   </script>
 
 </body>
