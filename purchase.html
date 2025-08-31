@@ -100,33 +100,36 @@
         },
         onApprove: function(data, actions) {
           return actions.order.capture().then(function(orderData) {
-            // Call backend to generate license
-            fetch("http://127.0.0.1:8000/admin/generate", {
+            // Attempt to call backend to generate license
+            return fetch("http://127.0.0.1:8000/admin/generate", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
                 "x-admin-key": "Yqfhzm2p939q"
               },
               body: JSON.stringify({
-                user_id: email,
+                user_id: emailInput.value,
                 product_id: "paid"
               })
             })
             .then(res => res.json())
             .then(data => {
               if (data.code) {
+                // License generated successfully → redirect to license page
                 window.location.href = "license.html?code=" + encodeURIComponent(data.code);
               } else {
-                alert("Error: No license code received.");
+                // Backend didn't return code → cancel payment
+                alert("❌ Cannot generate license. Please try again later.");
+                return actions.order.cancel();
               }
             })
             .catch(err => {
-              alert("Error contacting server: " + err);
+              // Network error → cancel payment
+              alert("❌ Cannot connect to server. Try again later.");
+              return actions.order.cancel();
             });
           });
         }
-      }).render('#paypal-container');
-    }
 
     // Watch email input
     emailInput.addEventListener("input", function() {
