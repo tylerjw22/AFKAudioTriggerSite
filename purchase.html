@@ -42,110 +42,102 @@
     }
     #paypal-container { 
       margin-top:20px; 
-      display:none;
+      display:none; /* hidden until valid email */
     }
   </style>
 </head>
 <body>
 
-  <div class="purchase-box">
-    <h2>Purchase AFK Audio Trigger Paid Version</h2>
+<div class="purchase-box">
+  <h2>Purchase AFK Audio Trigger Paid Version</h2>
 
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-    <!-- PayPal button container -->
-    <div id="paypal-container"></div>
+  <div id="paypal-container"></div>
 
-    <!-- Privacy Notice -->
-    <div class="privacy-box">
-      AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong>. 
-      Contact us at <strong>[your support email here]</strong> for data removal.
-    </div>
+  <div class="privacy-box">
+    AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong>. 
+    Contact us at <strong>[your support email here]</strong> for data removal.
   </div>
+</div>
 
-  <!-- Load PayPal SDK -->
-  <script src="https://www.paypal.com/sdk/js?client-id=Ac23TNLifUOaHdYPNzkDfbkhfubVEJsQ6GuofyZxig6IkQxDw3Rz512So2S5cDNcHHDz3kdVwcWfeER-&currency=AUD&intent=capture"></script>
-  <script>
-    const emailInput = document.getElementById("email");
-    const paypalContainer = document.getElementById("paypal-container");
-    let paypalRendered = false;
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=AUD&intent=capture"></script>
+<script>
+  const emailInput = document.getElementById("email");
+  const paypalContainer = document.getElementById("paypal-container");
+  let paypalRendered = false;
 
-    function validateEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
 
-    function renderPayPalButton(email) {
-      paypalContainer.innerHTML = ""; // clear previous render
-      paypal.Buttons({
-        style: {
-          color: 'blue',  // Make button blue
-          shape: 'rect',
-          label: 'paypal'
-        },
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                currency_code: "AUD",
-                value: "9.99"
-              },
-              description: "AFK Audio Trigger Paid Version",
-              category: "DIGITAL_GOODS"
-            }],
-            application_context: {
-              shipping_preference: "NO_SHIPPING" // no delivery
-            }
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(orderData) {
-            // Attempt to call backend to generate license
-            return fetch("http://127.0.0.1:8000/admin/generate", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-admin-key": "Yqfhzm2p939q"
-              },
-              body: JSON.stringify({
-                user_id: emailInput.value,
-                product_id: "paid"
-              })
+  function renderPayPalButton(email) {
+    paypalContainer.innerHTML = ""; // clear any previous render
+    paypal.Buttons({
+      style: {
+        color: 'blue',
+        shape: 'rect',
+        label: 'paypal'
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { currency_code: "AUD", value: "9.99" },
+            description: "AFK Audio Trigger Paid Version",
+            category: "DIGITAL_GOODS"
+          }],
+          application_context: {
+            shipping_preference: "NO_SHIPPING"
+          }
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(orderData) {
+          // Call backend to generate license
+          return fetch("http://127.0.0.1:8000/admin/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-admin-key": "Yqfhzm2p939q"
+            },
+            body: JSON.stringify({
+              user_id: email,
+              product_id: "paid"
             })
-            .then(res => res.json())
-            .then(data => {
-              if (data.code) {
-                // License generated successfully → redirect to license page
-                window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-              } else {
-                // Backend didn't return code → cancel payment
-                alert("❌ Cannot generate license. Please try again later.");
-                return actions.order.cancel();
-              }
-            })
-            .catch(err => {
-              // Network error → cancel payment
-              alert("❌ Cannot connect to server. Try again later.");
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.code) {
+              window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+            } else {
+              alert("❌ Cannot generate license. Please try again later.");
               return actions.order.cancel();
-            });
+            }
+          })
+          .catch(err => {
+            alert("❌ Cannot connect to server. Try again later.");
+            return actions.order.cancel();
           });
-        }
-
-    // Watch email input
-    emailInput.addEventListener("input", function() {
-      if (validateEmail(emailInput.value)) {
-        paypalContainer.style.display = "block";
-        if (!paypalRendered) {
-          renderPayPalButton(emailInput.value);
-          paypalRendered = true;
-        }
-      } else {
-        paypalContainer.style.display = "none";
-        paypalContainer.innerHTML = "";
-        paypalRendered = false;
+        });
       }
-    });
-  </script>
+    }).render('#paypal-container');
+  }
+
+  emailInput.addEventListener("input", function() {
+    if (validateEmail(emailInput.value)) {
+      paypalContainer.style.display = "block";
+      if (!paypalRendered) {
+        renderPayPalButton(emailInput.value);
+        paypalRendered = true;
+      }
+    } else {
+      paypalContainer.style.display = "none";
+      paypalContainer.innerHTML = "";
+      paypalRendered = false;
+    }
+  });
+</script>
 
 </body>
 </html>
