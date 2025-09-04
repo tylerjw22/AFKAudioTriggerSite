@@ -151,17 +151,17 @@
         });
       },
       onApprove: function(data, actions) {
-        return fetch("https://afkaudiotrigger.tikdns.org/admin/generate", {
+        return fetch("/api/generate", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "x-admin-key": "XM67guXHW8k21qXSpKrKQ"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             user_id: emailInput.value,
             product_id: "paid"
           })
         })
+
         .then(res => res.json())
         .then(data => {
           if (data.code) {
