@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch("https://afkaudiotrigger.tikdns.org/admin/generate", {
+    const response = await fetch("https://afkaudiotrigger.ignorelist.com/admin/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
