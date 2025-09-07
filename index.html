@@ -147,6 +147,27 @@
         border-radius: 10px; 
         border: none; 
     }
+
+    /* Support Email Box */
+    .support-email {
+        position: fixed;
+        bottom: 10px;
+        left: 15px;
+        background: rgba(30, 30, 30, 0.9);
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 0.9em;
+        color: #cccccc;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+        z-index: 1000;
+    }
+    .support-email a {
+        color: #66c0ba;
+        text-decoration: none;
+    }
+    .support-email a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
@@ -201,6 +222,11 @@
     <p>Here is a video demonstration of what the program can be used for in a video game environment.</p>
     <iframe src="https://www.youtube.com/embed/Bh-2Rj1e53I" title="YouTube video" allowfullscreen></iframe>
 </div>
+
+<div class="support-email">
+    Support: <a href="mailto:support@yourdomain.com">support@yourdomain.com</a>
+</div>
+
 
 </body>
 </html>
