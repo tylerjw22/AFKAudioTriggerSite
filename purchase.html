@@ -156,30 +156,30 @@
       },
 
       onApprove: function(data, actions) {
-        return fetch("/api/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user_id: emailInput.value,
-            product_id: "paid"
+        // data.orderID is provided by PayPal automatically
+        return actions.order.capture().then(() => {
+          return fetch("/api/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: emailInput.value,
+              product_id: "paid",
+              orderID: data.orderID
+            })
           })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.code) {
-            return actions.order.capture().then(() => {
+          .then(res => res.json())
+          .then(data => {
+            if (data.code) {
               window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-            });
-          } else {
-            alert("❌ Cannot generate license. Payment canceled. Try again later.");
-          }
-        })
-        .catch(err => {
-          alert("❌ Cannot connect to server. Payment canceled. Try again later.");
+            } else {
+              alert("❌ Cannot generate license. Payment canceled. Try again later.");
+            }
+          })
+          .catch(err => {
+            alert("❌ Cannot connect to server. Payment canceled. Try again later.");
+          });
         });
       }
-    }).render('#paypal-container');
-  }
 
   emailInput.addEventListener("input", function() {
     if (validateEmail(emailInput.value)) {
