@@ -139,44 +139,43 @@
     paypalContainer.innerHTML = ""; // clear any previous render
     paypal.Buttons({
       style: { color: 'blue', shape: 'rect', label: 'paypal' },
-      createOrder: function(data, actions) {
+
+      createOrder: async function(data, actions) {
+        // fetch the price from backend
+        const res = await fetch("/api/price");
+        const price = await res.json();
+
         return actions.order.create({
           purchase_units: [{
-            amount: { currency_code: "AUD", value: "9.99" },
+            amount: { currency_code: price.currency, value: price.value },
             description: "AFK Audio Trigger Paid Version",
             category: "DIGITAL_GOODS"
           }],
-          application_context: {
-            shipping_preference: "NO_SHIPPING"
-          }
+          application_context: { shipping_preference: "NO_SHIPPING" }
         });
       },
+
       onApprove: function(data, actions) {
         return fetch("/api/generate", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             user_id: emailInput.value,
             product_id: "paid"
           })
         })
-
         .then(res => res.json())
         .then(data => {
           if (data.code) {
-            return actions.order.capture().then(function(orderData) {
+            return actions.order.capture().then(() => {
               window.location.href = "license.html?code=" + encodeURIComponent(data.code);
             });
           } else {
             alert("❌ Cannot generate license. Payment canceled. Try again later.");
-            throw new Error("License generation failed");
           }
         })
         .catch(err => {
           alert("❌ Cannot connect to server. Payment canceled. Try again later.");
-          throw err;
         });
       }
     }).render('#paypal-container');
