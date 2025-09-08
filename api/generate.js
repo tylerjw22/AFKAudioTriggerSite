@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const base64Auth = Buffer.from(`${PAYPAL_CLIENT}:${PAYPAL_SECRET}`).toString("base64");
 
     // Get access token
-    const tokenRes = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
+    const tokenRes = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
       method: "POST",
       headers: {
         Authorization: `Basic ${base64Auth}`,
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     if (!tokenData.access_token) throw new Error("PayPal auth failed");
 
     // Get order details
-    const orderRes = await fetch(`https://api-m.paypal.com/v2/checkout/orders/${orderID}`, {
+    const orderRes = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,
