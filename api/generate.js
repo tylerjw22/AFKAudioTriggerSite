@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   try {
     // 1️⃣ Get PayPal access token
     const auth = Buffer.from(
-      `${process.env.PAYPAL_CLIENT}:${process.env.PAYPAL_SECRET}`
+      `${process.env.SANDBOX_PAYPAL_CLIENT}:${process.env.SANDBOX_PAYPAL_SECRET}`
     ).toString("base64");
 
     const tokenRes = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
