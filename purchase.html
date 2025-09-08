@@ -155,8 +155,7 @@ function renderPayPalButton(email) {
     },
 
     onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        // send details along with orderID so backend has a reliable record
+      return actions.order.capture().then((details) => {
         return fetch("/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -164,8 +163,7 @@ function renderPayPalButton(email) {
             user_id: emailInput.value,
             product_id: "paid",
             orderID: data.orderID,
-            captureID: details.purchase_units[0].payments.captures[0].id,
-            status: details.status
+            status: details.status // send PayPal capture status
           })
         })
         .then(res => res.json())
