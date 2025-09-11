@@ -137,51 +137,67 @@ function validateEmail(email) {
 
 function renderPayPalButton(email) {
   paypalContainer.innerHTML = ""; // clear any previous render
-  paypal.Buttons({
-    style: { color: 'blue', shape: 'rect', label: 'paypal' },
 
-    createOrder: async function(data, actions) {
-      const res = await fetch("/api/price");
-      const price = await res.json();
+  // ✅ Check VPS before proceeding
+  fetch("/api/check-vps")
+    .then(res => res.json())
+    .then(status => {
+      if (status.status !== "ok") {
+        alert("❌ Cannot connect to license server. Please try again later.");
+        return;
+      }
 
-      return actions.order.create({
-        purchase_units: [{
-          amount: { currency_code: price.currency, value: price.value },
-          description: "AFK Audio Trigger Paid Version",
-          category: "DIGITAL_GOODS"
-        }],
-        application_context: { shipping_preference: "NO_SHIPPING" }
-      });
-    },
+      // VPS is up → render PayPal button
+      paypal.Buttons({
+        style: { color: 'blue', shape: 'rect', label: 'paypal' },
 
-    onApprove: function(data, actions) {
-      return actions.order.capture().then((details) => {
-        return fetch("/api/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user_id: emailInput.value,
-            product_id: "paid",
-            orderID: data.orderID,
-            status: details.status // send PayPal capture status
-          })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.code) {
-            window.location.href = "license.html?code=" + encodeURIComponent(data.code);
-          } else {
-            alert("❌ Cannot generate license. Payment canceled. Try again later.");
-          }
-        })
-        .catch(err => {
-          alert("❌ Cannot connect to server. Payment canceled. Try again later.");
-        });
-      });
-    }
+        createOrder: async function(data, actions) {
+          const res = await fetch("/api/price");
+          const price = await res.json();
 
-  }).render('#paypal-container'); // <-- make sure this is here
+          return actions.order.create({
+            purchase_units: [{
+              amount: { currency_code: price.currency, value: price.value },
+              description: "AFK Audio Trigger Paid Version",
+              category: "DIGITAL_GOODS"
+            }],
+            application_context: { shipping_preference: "NO_SHIPPING" }
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then((details) => {
+            return fetch("/api/generate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: emailInput.value,
+                product_id: "paid",
+                orderID: data.orderID,
+                status: details.status
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.code) {
+                window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+              } else {
+                alert("❌ Cannot generate license. Payment canceled. Try again later.");
+              }
+            })
+            .catch(err => {
+              alert("❌ Cannot connect to server. Payment canceled. Try again later.");
+            });
+          });
+        }
+
+      }).render('#paypal-container'); // <-- still here
+    })
+    .catch(() => {
+      alert("❌ VPS check failed. Try again later.");
+    });
 }
+
 
 emailInput.addEventListener("input", function() {
   if (validateEmail(emailInput.value)) {
