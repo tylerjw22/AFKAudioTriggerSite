@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     }
 
     // 3️⃣ Call your VPS to generate the license
-    const generateRes = await fetch("https://afkaudiotrigger.ignorelist.com/admin/generate", {
+    const generateRes = await fetch("http://afkaudiotrigger.ignorelist.com/admin/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
