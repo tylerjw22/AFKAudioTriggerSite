@@ -1,7 +1,7 @@
 // /pages/api/check-vps.js
 export default async function handler(req, res) {
   try {
-    const vpsRes = await fetch("http://afkaudiotrigger.ignorelist.com/", {
+    const vpsRes = await fetch("https://afkaudiotrigger.gnorelist.com/", {
       method: "GET",
       headers: { "Content-Type": "application/json" }
     });
