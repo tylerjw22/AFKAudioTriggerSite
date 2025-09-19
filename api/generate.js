@@ -12,10 +12,10 @@ export default async function handler(req, res) {
   try {
     // 1️⃣ Get PayPal access token
     const auth = Buffer.from(
-      `${process.env.SANDBOX_PAYPAL_CLIENT}:${process.env.SANDBOX_PAYPAL_SECRET}`
+      `${process.env.PAYPAL_CLIENT}:${process.env.PAYPAL_SECRET}`
     ).toString("base64");
 
-    const tokenRes = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+    const tokenRes = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
       method: "POST",
       headers: {
         Authorization: `Basic ${auth}`,
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
     // 2️⃣ Verify the order with PayPal
     const orderRes = await fetch(
-      `https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}`,
+      `https://api-m.paypal.com/v2/checkout/orders/${orderID}`,
       {
         headers: {
           Authorization: `Bearer ${tokenData.access_token}`,
