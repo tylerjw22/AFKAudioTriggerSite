@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFK Audio Trigger</title>
+  <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --accent: #66c0ba;
+      --text: #e0e0e0;
+      --muted: #999;
+      --highlight: #47AD36;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(135deg, #0d0d0d, #3a3a3a);
+      border-bottom: 2px solid #333;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin: 0 0 10px;
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(102,192,186,0.5);
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    main.purchase-box {
+      max-width: 520px;
+      margin: 60px auto;
+      background: var(--surface);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    main.purchase-box h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #555;
+      border-radius: 6px;
+      font-size: 1em;
+      box-sizing: border-box;
+      background-color: #2c2c2c;
+      color: var(--text);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--highlight);
+      box-shadow: 0 0 6px rgba(71,173,54,0.7);
+    }
+
+    /* Price Tag */
+
+    #paypal-container {
+      margin-top: 25px;
+      display: none;
+    }
+
+    .verified-badge {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 14px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: #4CAF50;
+      background: rgba(76, 175, 80, 0.15);
+      border: 1px solid #4CAF50;
+      border-radius: 20px;
+    }
+    .verified-badge::before {
+      content: "✔ Secure • ";
+    }
+
+    .privacy-box {
+      margin-top: 25px;
+      padding: 15px;
+      background: #1f1f1f;
+      border-left: 4px solid #2196F3;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: #cccccc;
+      text-align: left;
+    }
+
+    /* Footer */
+    footer {
+      background: #0d0d0d;
+      padding: 25px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-top: 2px solid #333;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      margin: 0 4px;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* Support Box */
+    .support-email {
+      position: fixed;
+      bottom: 10px;
+      left: 15px;
+      background: rgba(30,30,30,0.9);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: #ccc;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    }
+    .support-email a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>AFK Audio Trigger</h1>
+  <p>Purchase Paid Version</p>
+</header>
+
+<main class="purchase-box">
+  <h2>Get the Pro Version</h2>
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+  <div id="paypal-container"></div>
+
+  <div class="verified-badge">No ads, no malware</div>
+
+  <div class="privacy-box">
+    AFK Audio Trigger respects your privacy. We collect your <strong>email address</strong> only to generate your license code. Your email will <strong>never be sold or shared</strong>.
+    Contact us at <strong>afkaudiotriggerhelp@gmail.com</strong> for data removal.
+  </div>
+</main>
+
+<footer>
+  <p>Made by <strong>mori227</strong>. Join the <a href="https://discord.gg/">Discord</a> for support & updates.</p>
+  <a href="privacy.html">Privacy Policy</a> •
+  <a href="refund.html">Refund Policy</a> •
+  <a href="terms.html">Terms of Service</a>
+</footer>
+
+<div class="support-email">
+  Support: <a href="mailto:afkaudiotriggerhelp@gmail.com">afkaudiotriggerhelp@gmail.com</a>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=Ac23TNLifUOaHdYPNzkDfbkhfubVEJsQ6GuofyZxig6IkQxDw3Rz512So2S5cDNcHHDz3kdVwcWfeER-&currency=AUD&intent=capture"></script>
+<script>
+const emailInput = document.getElementById("email");
+const paypalContainer = document.getElementById("paypal-container");
+let paypalRendered = false;
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Fetch price dynamically
+fetch("/api/price")
+  .then(res => res.json())
+  .then(price => {
+    priceDisplay.textContent = `${price.currency} ${price.value}`;
+  })
+  .catch(() => { priceDisplay.textContent = "Unavailable"; });
+
+function renderPayPalButton(email) {
+  paypalContainer.innerHTML = "";
+
+  fetch("/api/check-vps")
+    .then(res => res.json())
+    .then(status => {
+      if (status.status !== "ok") {
+        alert("❌ Cannot connect to server. Please try again later.");
+        return;
+      }
+
+      paypal.Buttons({
+        style: { color: 'blue', shape: 'rect', label: 'paypal' },
+
+        createOrder: async function(data, actions) {
+          const res = await fetch("/api/price");
+          const price = await res.json();
+
+          return actions.order.create({
+            purchase_units: [{
+              amount: { currency_code: price.currency, value: price.value },
+              description: "AFK Audio Trigger Paid Version",
+              category: "DIGITAL_GOODS"
+            }],
+            application_context: { shipping_preference: "NO_SHIPPING" }
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then((details) => {
+            return fetch("/api/generate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: emailInput.value,
+                product_id: "paid",
+                orderID: data.orderID,
+                status: details.status
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.code) {
+                window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+              } else {
+                alert("❌ Cannot connect to server. Please try again later.");
+              }
+            })
+            .catch(() => {
+              alert("❌ Cannot connect to server. Please try again later.");
+            });
+          });
+        }
+
+      }).render('#paypal-container');
+    })
+    .catch(() => { alert("❌ Cannot connect to server. Please try again later."); });
+}
+
+emailInput.addEventListener("input", function() {
+  if (validateEmail(emailInput.value)) {
+    paypalContainer.style.display = "block";
+    if (!paypalRendered) {
+      renderPayPalButton(emailInput.value);
+      paypalRendered = true;
+    }
+  } else {
+    paypalContainer.style.display = "none";
+    paypalContainer.innerHTML = "";
+    paypalRendered = false;
+  }
+});
+</script>
+
+</body>
+</html>
