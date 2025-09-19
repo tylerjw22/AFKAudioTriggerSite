@@ -140,7 +140,14 @@
     .support-email a { color: var(--accent); text-decoration: none; }
 
     /* MOBILE FIXES */
-@media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) {
+  /* Logo scaling */
+  header img {
+    max-width: 90%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
   header h1 {
     font-size: 2rem;
   }
@@ -167,15 +174,21 @@
     font-size: 0.85rem;
     padding: 20px 10px;
   }
-  footer p, footer a {
-    display: block;
-    margin: 4px 0;
+  footer p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+    margin: 0 0 8px;
+  }
+  footer a {
+    display: inline-block;
+    margin: 2px 4px;
   }
   /* Support box moves above footer instead of overlapping links */
   .support-email {
     position: static;
     display: inline-block;
-    margin: 20px auto 0;
+    margin: 15px auto 0;
     text-align: center;
     box-shadow: none;
     background: var(--surface);
