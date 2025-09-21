@@ -174,9 +174,9 @@
 
 <footer>
   <p>Made by <strong>mori227</strong>. Join the <a href="https://discord.gg/2jJSVy9Jju">Discord</a> for support & updates.</p>
-  <a href="privacy.html">Privacy Policy</a> •
-  <a href="refund.html">Refund Policy</a> •
-  <a href="terms.html">Terms of Service</a>
+  <a href="/privacy">Privacy Policy</a> •
+  <a href="/refund">Refund Policy</a> •
+  <a href="/terms">Terms of Service</a>
 </footer>
 
 <div class="support-email">
@@ -244,7 +244,7 @@ function renderPayPalButton(email) {
             .then(res => res.json())
             .then(data => {
               if (data.code) {
-                window.location.href = "license.html?code=" + encodeURIComponent(data.code);
+                window.location.href = "/license?code=" + encodeURIComponent(data.code);
               } else {
                 alert("❌ Cannot connect to server. Please try again later.");
               }
