@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFK Audio Trigger</title>
+  <link rel="icon" type="image/x-icon" href="/assets/icons/icon.ico">
+  <meta name="trustpilot-one-time-domain-verification-id" content="ce076a84-c404-43e3-986c-9251b5e69f50"/>
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --accent: #66c0ba;
+      --text: #e0e0e0;
+      --muted: #999;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 15px 20px 40px;
+      text-align: center;
+      background: linear-gradient(135deg, #0d0d0d, #3a3a3a);
+    }
+    header h1 {
+      font-size: 3rem;
+      margin: 0 0 12px;
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(102,192,186,0.5);
+    }
+    header p {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 25px;
+    }
+    .cta-buttons a {
+      display: inline-block;
+      margin: 6px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: transform .15s;
+    }
+    .cta-buttons a:hover { transform: scale(1.05); }
+
+    /* Features Table */
+    .plans {
+      max-width: 900px;
+      margin: -40px auto 60px;
+      background: var(--surface);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 18px;
+      text-align: center;
+      border-bottom: 1px solid #333;
+    }
+    th {
+      background: #181818;
+      font-size: 1.1rem;
+    }
+    td:first-child, th:first-child {
+      text-align: left;
+      padding-left: 30px;
+    }
+    tr:last-child td { border-bottom: none; }
+    .price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    .download-btn, .buy-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 22px;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .2s, transform .1s;
+    }
+    .download-btn {
+      background: #2196F3;
+      color: #fff;
+    }
+    .download-btn:hover { transform: scale(1.05); }
+    .buy-btn {
+      background: #47AD36;
+      color: #fff;
+    }
+    .buy-btn:hover { transform: scale(1.05); }
+
+    /* Video */
+    .video-section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .video-section iframe {
+      width: 100%;
+      height: 450px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    footer {
+      background: #0d0d0d;
+      padding: 25px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Support box */
+    .support-email {
+      position: fixed;
+      bottom: 10px;
+      left: 15px;
+      background: rgba(30,30,30,0.9);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: #ccc;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    }
+    .support-email a { color: var(--accent); text-decoration: none; }
+
+    /* MOBILE FIXES */
+  @media screen and (max-width: 768px) {
+  /* Logo scaling */
+  header img {
+    max-width: 90%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+  header p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  .cta-buttons a {
+    display: block;
+    margin: 8px auto;
+  }
+  .plans {
+    margin: 20px 10px 40px;
+    overflow-x: auto;
+  }
+  table th, table td {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+  .video-section iframe {
+    height: 250px;
+  }
+  footer {
+    font-size: 0.85rem;
+    padding: 20px 10px;
+  }
+  footer p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+    margin: 0 0 8px;
+  }
+  footer a {
+    display: inline-block;
+    margin: 2px 4px;
+  }
+  /* Support box moves above footer instead of overlapping links */
+  .support-email {
+    position: static;
+    display: inline-block;
+    margin: 15px auto 0;
+    text-align: center;
+    box-shadow: none;
+    background: var(--surface);
+  }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="assets/icons/logo.png" 
+    alt="AFK Audio Trigger logo"
+    style="height:250px;width:auto;display:block;margin:0 auto 0px;">
+  <h1>AFK Audio Trigger</h1>
+  <p>Win while AFK — smart audio trigger for your digital needs</p>
+  <div class="cta-buttons">
+    <a href="#plans">See Plans</a>
+    <a href="https://github.com/mori227/AFKAudioTriggerFree/releases/download/v1.2.0/AFKAudioTriggerFreev1.2.zip">Download Free</a>
+  </div>
+</header>
+
+<section id="plans" class="plans">
+  <table>
+    <thead>
+      <tr>
+        <th>Features</th>
+        <th>Free</th>
+        <th>Pro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Audio detection & key press</td>
+        <td>✔</td><td>✔</td>
+      </tr>
+      <tr>
+        <td>Custom key binding</td>
+        <td>✖</td><td>✔</td>
+      </tr>
+      <tr>
+        <td>Calibration to filter unwanted sounds</td>
+        <td>✖</td><td>✔</td>
+      </tr>
+      <tr>
+        <td>Detection log / info box</td>
+        <td>✖</td><td>✔</td>
+      </tr>
+      <tr>
+        <td>Customizable settings</td>
+        <td>✖</td><td>✔</td>
+      </tr>
+      <tr>
+        <td class="price">Price</td>
+        <td class="price">Free</td>
+        <td class="price">USD $9.99 one-time</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><a class="download-btn" href="https://github.com/mori227/AFKAudioTriggerFree/releases/download/v1.2.0/AFKAudioTriggerFreev1.2.zip">Download</a></td>
+        <td><a class="buy-btn" href="/purchase">Buy Pro</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="video-section">
+  <h2>See AFK Audio Trigger in Action</h2>
+  <iframe src="https://www.youtube.com/embed/Bh-2Rj1e53I" title="Demo Video" allowfullscreen></iframe>
+</div>
+
+<footer>
+  <p>Made by <strong>mori227</strong>. Join the <a href="https://discord.gg/2jJSVy9Jju">Discord</a> for support & updates.</p>
+  <a href="privacy.html">Privacy Policy</a> •
+  <a href="refund.html">Refund Policy</a> •
+  <a href="terms.html">Terms of Service</a>
+</footer>
+
+<div class="support-email">
+  Support: <a href="mailto:afkaudiotriggerhelp@gmail.com">afkaudiotriggerhelp@gmail.com</a>
+</div>
+  
+
+</body>
+</html>
