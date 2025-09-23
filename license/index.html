@@ -115,6 +115,51 @@
     content: "✔ Secure • ";
   }
 
+  #discord-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #5865F2; /* Discord blurple */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 9999;
+    min-width: 300px;
+  }
+
+  #discord-popup img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  #discord-popup span {
+    flex: 1;
+    font-size: 0.95em;
+  }
+  
+  #discord-popup a {
+    background: #7289DA; /* lighter Discord color for button */
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
+  #discord-popup button#discord-popup-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+
   footer {
     background: #0d0d0d;
     padding: 25px;
@@ -168,9 +213,14 @@
   <p style="margin-top: 12px; font-size: 0.85em; color: #ffcc00;">
     ⚠ Before unzipping, right-click the downloaded ZIP → Properties → Unblock → Apply. If you dont do these steps the app may not open.
   </p>
-  <p id="discord-recommend" style="margin-top: 12px; font-size: 0.9em; color: #66c0ba; display: none;">
-    ✅ For future updates and support, consider joining our <a href="https://discord.gg/2jJSVy9Jju" target="_blank">Discord server</a>!
-  </p>
+</div>
+
+<!-- Discord floating popup -->
+<div id="discord-popup" style="display:none;">
+  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" />
+  <span>To make sure you're always on the latest version, join the Discord!</span>
+  <a href="https://discord.gg/2jJSVy9Jju" target="_blank">Join Discord</a>
+  <button id="discord-popup-close">×</button>
 </div>
 
 <footer>
@@ -202,11 +252,18 @@
     });
   }
 
-  // Show Discord recommendation after download
+  const discordPopup = document.getElementById("discord-popup");
+  const discordClose = document.getElementById("discord-popup-close");
+  
+  // Show popup after download
   document.getElementById("download-link").addEventListener("click", () => {
-    const discordMsg = document.getElementById("discord-recommend");
-    discordMsg.style.display = "block";
-});
+    discordPopup.style.display = "flex";
+  });
+  
+  // Close popup
+  discordClose.addEventListener("click", () => {
+    discordPopup.style.display = "none";
+  });
 
 </script>
 
