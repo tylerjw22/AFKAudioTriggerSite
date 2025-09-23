@@ -117,41 +117,48 @@
 
   #discord-popup {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #5865F2; /* Discord blurple */
+    top: 50%;             /* Center vertically */
+    right: 0;             /* Stick to right side */
+    transform: translateY(-50%); /* Center vertically */
+    background: #5865F2;  /* Discord blurple */
     color: white;
-    padding: 15px 20px;
-    border-radius: 12px;
+    width: 250px;         /* Square-ish */
+    padding: 20px;
+    border-radius: 12px 0 0 12px; /* Rounded left side */
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 12px;
     box-shadow: 0 6px 16px rgba(0,0,0,0.3);
     font-family: 'Segoe UI', sans-serif;
     z-index: 9999;
-    min-width: 300px;
   }
-
+  
   #discord-popup img {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
   }
   
   #discord-popup span {
-    flex: 1;
+    text-align: center;
     font-size: 0.95em;
   }
   
   #discord-popup a {
-    background: #7289DA; /* lighter Discord color for button */
+    background: #7289DA; /* Discord button color */
     color: white;
     text-decoration: none;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border-radius: 6px;
     font-weight: bold;
+    text-align: center;
+    width: 100%;
   }
   
   #discord-popup button#discord-popup-close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
     background: transparent;
     border: none;
     color: white;
@@ -216,12 +223,13 @@
 </div>
 
 <!-- Discord floating popup -->
-<div id="discord-popup" style="display:none;">
+<div id="discord-popup">
+  <button id="discord-popup-close">×</button>
   <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" />
   <span>To make sure you're always on the latest version, join the Discord!</span>
   <a href="https://discord.gg/2jJSVy9Jju" target="_blank">Join Discord</a>
-  <button id="discord-popup-close">×</button>
 </div>
+
 
 <footer>
   <p>Made by <strong>mori227</strong>. Join the <a href="https://discord.gg/2jJSVy9Jju">Discord</a> for support & updates.</p>
@@ -255,15 +263,11 @@
   const discordPopup = document.getElementById("discord-popup");
   const discordClose = document.getElementById("discord-popup-close");
   
-  // Show popup after download
-  document.getElementById("download-link").addEventListener("click", () => {
-    discordPopup.style.display = "flex";
-  });
-  
   // Close popup
   discordClose.addEventListener("click", () => {
     discordPopup.style.display = "none";
   });
+
 
 </script>
 
