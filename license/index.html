@@ -161,13 +161,15 @@
 
 <div class="box">
   <h2>Download AFK Audio Trigger Pro</h2>
-  <a href="https://github.com/mori227/AFKAudioTrigger/releases/download/v1.9.0/AFKAudioTriggerv1.9.zip" download>
+  <a id="download-link" href="https://github.com/mori227/AFKAudioTrigger/releases/download/v1.9.0/AFKAudioTriggerv1.9.zip" download>
     <button class="download-btn">Download Pro App</button>
   </a>
   <div class="verified-badge">No ads, no malware</div>
-  <!-- New reminder text -->
   <p style="margin-top: 12px; font-size: 0.85em; color: #ffcc00;">
     ⚠ Before unzipping, right-click the downloaded ZIP → Properties → Unblock → Apply. If you dont do these steps the app may not open.
+  </p>
+  <p id="discord-recommend" style="margin-top: 12px; font-size: 0.9em; color: #66c0ba; display: none;">
+    ✅ For future updates and support, consider joining our <a href="https://discord.gg/2jJSVy9Jju" target="_blank">Discord server</a>!
   </p>
 </div>
 
@@ -199,6 +201,13 @@
       alert("Code copied to clipboard!");
     });
   }
+
+  // Show Discord recommendation after download
+  document.getElementById("download-link").addEventListener("click", () => {
+    const discordMsg = document.getElementById("discord-recommend");
+    discordMsg.style.display = "block";
+});
+
 </script>
 
 </body>
