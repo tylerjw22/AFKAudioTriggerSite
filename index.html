@@ -11,8 +11,8 @@
       --bg: #121212;
       --surface: #1e1e1e;
       --accent: #66c0ba;
-      --text: #e0e0e0;
-      --muted: #999;
+      --text: #c0c0c0;
+      --muted: #888;
     }
     body {
       margin: 0;
@@ -50,7 +50,6 @@
     }
     .cta-buttons a:hover { transform: scale(1.05); }
 
-    /* Features Table */
     .plans {
       max-width: 900px;
       margin: -40px auto 60px;
@@ -59,28 +58,34 @@
       overflow: hidden;
       box-shadow: 0 6px 18px rgba(0,0,0,0.5);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+    table { width: 100%; border-collapse: collapse; }
     th, td {
       padding: 18px;
       text-align: center;
       border-bottom: 1px solid #333;
+      color: var(--text);
     }
-    th {
-      background: #181818;
-      font-size: 1.1rem;
-    }
+    th { background: #181818; font-size: 1.1rem; }
     td:first-child, th:first-child {
-      text-align: left;
-      padding-left: 30px;
+      text-align: left; padding-left: 30px;
     }
     tr:last-child td { border-bottom: none; }
     .price {
       font-size: 1.4rem;
       font-weight: bold;
       color: var(--accent);
+    }
+    .old-price {
+      text-decoration: line-through;
+      color: #888;
+      margin-right: 6px;
+      font-weight: normal;
+      font-size: 1rem;
+    }
+    .new-price {
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.4rem;
     }
     .download-btn, .buy-btn {
       display: inline-block;
@@ -91,18 +96,11 @@
       text-decoration: none;
       transition: background .2s, transform .1s;
     }
-    .download-btn {
-      background: #2196F3;
-      color: #fff;
-    }
+    .download-btn { background: #2196F3; color: #fff; }
     .download-btn:hover { transform: scale(1.05); }
-    .buy-btn {
-      background: #47AD36;
-      color: #fff;
-    }
+    .buy-btn { background: #47AD36; color: #fff; }
     .buy-btn:hover { transform: scale(1.05); }
 
-    /* Video */
     .video-section {
       max-width: 800px;
       margin: 40px auto;
@@ -116,6 +114,40 @@
       border-radius: 10px;
     }
 
+    .how-it-works, .testimonials, .faq, .safety {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    .how-it-works h2, .testimonials h2, .faq h2, .safety h2 {
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .steps {
+      display: grid;
+      gap: 20px;
+    }
+    .step, .safety-box {
+      background: #181818;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .testimonial {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #181818;
+      border-radius: 8px;
+      font-style: italic;
+    }
+    .faq-item {
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+    .faq-item strong { color: var(--accent); }
     footer {
       background: #0d0d0d;
       padding: 25px;
@@ -126,7 +158,6 @@
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* Support box */
     .support-email {
       position: fixed;
       bottom: 10px;
@@ -140,74 +171,36 @@
     }
     .support-email a { color: var(--accent); text-decoration: none; }
 
-    /* MOBILE FIXES */
-  @media screen and (max-width: 768px) {
-  /* Logo scaling */
-  header img {
-    max-width: 90%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-
-  header h1 {
-    font-size: 2rem;
-  }
-  header p {
-    font-size: 1rem;
-    margin-bottom: 15px;
-  }
-  .cta-buttons a {
-    display: block;
-    margin: 8px auto;
-  }
-  .plans {
-    margin: 20px 10px 40px;
-    overflow-x: auto;
-  }
-  table th, table td {
-    padding: 12px 8px;
-    font-size: 0.9rem;
-  }
-  .video-section iframe {
-    height: 250px;
-  }
-  footer {
-    font-size: 0.85rem;
-    padding: 20px 10px;
-  }
-  footer p {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    text-align: center;
-    margin: 0 0 8px;
-  }
-  footer a {
-    display: inline-block;
-    margin: 2px 4px;
-  }
-  /* Support box moves above footer instead of overlapping links */
-  .support-email {
-    position: static;
-    display: inline-block;
-    margin: 15px auto 0;
-    text-align: center;
-    box-shadow: none;
-    background: var(--surface);
+    @media screen and (max-width: 768px) {
+      header img { max-width: 90%; height: auto; margin-bottom: 10px; }
+      header h1 { font-size: 2rem; }
+      header p { font-size: 1rem; margin-bottom: 15px; }
+      .cta-buttons a { display: block; margin: 8px auto; }
+      .plans { margin: 20px 10px 40px; overflow-x: auto; }
+      table th, table td { padding: 12px 8px; font-size: 0.9rem; }
+      .video-section iframe { height: 250px; }
+      footer { font-size: 0.85rem; padding: 20px 10px; }
+      footer p { font-size: 0.85rem; line-height: 1.4; margin: 0 0 8px; }
+      footer a { display: inline-block; margin: 2px 4px; }
+      .support-email {
+        position: static;
+        display: inline-block;
+        margin: 15px auto 0;
+        text-align: center;
+        box-shadow: none;
+        background: var(--surface);
+      }
     }
-  }
-
-
-  
   </style>
 </head>
 <body>
 
 <header>
   <img src="assets/icons/logo.png" 
-    alt="AFK Audio Trigger logo"
-    style="height:250px;width:auto;display:block;margin:0 auto 0px;">
+       alt="AFK Audio Trigger logo"
+       style="height:250px;width:auto;display:block;margin:0 auto 0px;">
   <h1>AFK Audio Trigger</h1>
-  <p>Win while AFK — smart audio trigger for your digital needs</p>
+  <p>Turn sound into shortcuts — Automate any app or game with audio-based keypresses</p>
   <div class="cta-buttons">
     <a href="#plans">See Plans</a>
     <a href="https://github.com/mori227/AFKAudioTriggerFree/releases/download/v1.3.0/AFKAudioTriggerFreev1.3.zip">Download Free Version</a>
@@ -224,30 +217,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Audio detection & key press</td>
-        <td>✔</td><td>✔</td>
-      </tr>
-      <tr>
-        <td>Custom key binding</td>
-        <td>✖</td><td>✔</td>
-      </tr>
-      <tr>
-        <td>Calibration to filter unwanted sounds</td>
-        <td>✖</td><td>✔</td>
-      </tr>
-      <tr>
-        <td>Detection log / info box</td>
-        <td>✖</td><td>✔</td>
-      </tr>
-      <tr>
-        <td>Customizable settings</td>
-        <td>✖</td><td>✔</td>
-      </tr>
+      <tr><td>Audio detection & key press</td><td>✔</td><td>✔</td></tr>
+      <tr><td>Custom key binding</td><td>✖</td><td>✔</td></tr>
+      <tr><td>Calibration to filter unwanted sounds</td><td>✖</td><td>✔</td></tr>
+      <tr><td>Detection log / info box</td><td>✖</td><td>✔</td></tr>
+      <tr><td>Customizable settings</td><td>✖</td><td>✔</td></tr>
       <tr>
         <td class="price">Price</td>
         <td class="price">Free</td>
-        <td class="price">USD $9.99 one-time</td>
+        <td class="price">
+          <span class="old-price">USD$19.99</span>
+          <span class="new-price">USD $9.99 <br><small>one-time purchase</small></span>
+        </td>
       </tr>
       <tr>
         <td></td>
@@ -260,25 +241,66 @@
 
 <div class="video-section">
   <h2>See AFK Audio Trigger in Action</h2>
+  <p>Watch how quickly AFK Audio Trigger reacts to real in-game sound events and converts them into instant keypresses.</p>
   <iframe src="https://www.youtube.com/embed/Bh-2Rj1e53I" title="Demo Video" allowfullscreen></iframe>
 </div>
 
-<!-- TrustBox widget - Review Collector -->
-<!-- TrustBox widget - Review Collector -->
-<div class="trustpilot-widget" 
-     data-locale="en-US" 
-     data-template-id="56278e9abfbbba0bdcd568bc" 
-     data-businessunit-id="68c6a6fd2962c7c6cf07234c" 
-     data-style-height="52px" 
-     data-style-width="100%" 
-     data-token="cc46a696-2375-47ca-bf8a-fed41c7fc3ea"
-     style="margin: 30px auto; max-width: 900px;">
-  <a href="https://www.trustpilot.com/review/afkaudiotrigger.site" target="_blank" rel="noopener">Trustpilot</a>
-</div>
-<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
-<!-- End TrustBox widget -->
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step"><strong>1.</strong> Run AFK Audio Trigger alongside any program or game.</div>
+    <div class="step"><strong>2.</strong> It listens for sound events above your chosen threshold.</div>
+    <div class="step"><strong>3.</strong> When triggered, it instantly presses your selected key — no delays.</div>
+  </div>
+</section>
 
-  
+<section class="safety">
+  <h2>Safe & Transparent</h2>
+  <div class="steps">
+    <div class="safety-box"><strong>✔ Complete package</strong> — all necessary files included for proper operation.</div>
+    <div class="safety-box"><strong>✔ Minimal setup</strong> — just extract and run, no installer required.</div>
+    <div class="safety-box"><strong>✔ No ads or bundled software</strong> — clean and focused on functionality.</div>
+    <div class="safety-box"><strong>✔ Mostly offline</strong> — AFK Audio Trigger works without internet for normal operation. Occasional login is required once every 30 days to verify your account.</div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>What Users Say</h2>
+
+  <div class="testimonial">“Works well, easy to use 👍” — <strong>Layla</strong></div>
+  <div class="testimonial">“Organized UI, easy to use and does what it says it does” — <strong>Tom</strong></div>
+  <div class="testimonial">“Exactly what I was looking for. Perfect!” — <strong>Scrimdan</strong></div>
+
+  <!-- Trustpilot widget inside a box matching testimonial style -->
+  <div class="testimonial trustpilot-box">
+    <div class="trustpilot-widget-container" style="max-width: 900px; margin: 0 auto;">
+      <div class="trustpilot-widget" 
+           data-locale="en-US" 
+           data-template-id="56278e9abfbbba0bdcd568bc" 
+           data-businessunit-id="68c6a6fd2962c7c6cf07234c" 
+           data-style-height="52px" 
+           data-style-width="100%" 
+           data-token="cc46a696-2375-47ca-bf8a-fed41c7fc3ea">
+        <a href="https://www.trustpilot.com/review/afkaudiotrigger.site" target="_blank" rel="noopener">Trustpilot</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+
+<section class="faq">
+  <h2>FAQ</h2>
+  <div class="faq-item"><strong>Will this get me banned?</strong><br>
+    AFK Audio Trigger simply converts sound into a keypress on your PC. It doesn’t modify game files or inject code. You’re responsible for how you use it in each game or application.</div>
+  <div class="faq-item"><strong>Is the free version enough?</strong><br>
+    Free covers the basics. Pro is built for long sessions, advanced customization, and serious users who want the best performance and features.</div>
+  <div class="faq-item"><strong>Do I need internet to use it?</strong><br>
+    No - After you log in for the first time you will not have to log in again for 30 days unless you log out manually.</div>
+  <div class="faq-item"><strong>Is it a subscription?</strong><br>
+    No — Pro is a <strong>one-time $9.99 purchase</strong> with lifetime access.</div>
+</section>
+
 <footer>
   <p>Made by <strong>mori227</strong>. Join the <a href="https://discord.gg/2jJSVy9Jju">Discord</a> for support & updates.</p>
   <a href="/privacy">Privacy Policy</a> •
@@ -289,6 +311,6 @@
 <div class="support-email">
   Support: <a href="mailto:afkaudiotriggerhelp@gmail.com">afkaudiotriggerhelp@gmail.com</a>
 </div>
-  
+
 </body>
 </html>
